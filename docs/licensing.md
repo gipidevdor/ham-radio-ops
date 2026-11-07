@@ -10,6 +10,12 @@ sibling distributions. The complete license is distributed unchanged in LICENSE.
 Its Perl Foundation copyright concerns the license document, not authorship
 of Ham::QSO. The license's permissions and disclaimers remain intact.
 
+<a href="../LICENSE" download>Original LICENSE file</a> · <a href="../NOTICE" download>Original NOTICE file</a> · [Complete CC0 1.0 text](../LICENSES/CC0-1.0.txt)
+
+The additional CC0 text applies only to external files expressly identified as
+CC0 in their provenance inventory. Including its terms does not change the
+Artistic 2.0 licence of the project's original code or documentation.
+
 The rights review is dated **2026-11-07**. The machine-readable record identifies
 reused project files, source revision/paths/hashes, original fixtures, external
 publications and directly invoked tools. It records the reviewed contents;
@@ -90,8 +96,28 @@ materials with different terms clearly identified. Do not import an unlicensed
 recording, document, image, font or code fragment on the assumption that being
 publicly downloadable makes it reusable.
 
-The offline author checks protect the verbatim project licence, the recorded
-verbatim imports, inclusion of notices/provenance in MANIFEST, and review records
-for pinned CI actions. New bundled media or standards documents require a changed
-rights policy and explicit review. These checks support that review; they cannot
-prove authorship, permission or legal compliance for arbitrary future additions.
+Run the standalone offline check before distribution:
+
+```sh
+perl maint/check-licenses.pl
+```
+
+The same check runs in the author tests and against the extracted release archive
+through `maint/check-dist.pl`. It checks the complete licence texts, recorded
+verbatim imports, release inventory, external-file hashes and the matching full
+licence for each bundled external work. Schemas, standards documents and media
+need an explicit reviewed inventory entry. Separate inventories are named in
+`external_material_inventories` in the provenance record; they are not discovered
+or trusted merely because an extra JSON file exists.
+
+CI actions require a reviewed immutable reference; newly added floating actions
+are rejected as well. Pinned Go/Python analyzers and the cpanminus bootstrap must
+match their licence records. Upstream licence links identify immutable commits,
+including the resolved commits of version-tagged tools. The check is offline;
+these recorded references do not imply a fresh upstream or transitive-dependency
+audit on every run.
+
+Regression tests deliberately alter licences, import bytes, inventory entries,
+action references and scanner versions to verify that the gate rejects them.
+These checks support the human rights review; they cannot prove authorship,
+permission or legal compliance for arbitrary future additions.

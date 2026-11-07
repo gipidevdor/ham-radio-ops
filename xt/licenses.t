@@ -4,95 +4,184 @@ use warnings;
 use Test::More;
 use Digest::SHA        qw(sha256_hex);
 use ExtUtils::Manifest qw(maniread);
+use File::Basename     qw(dirname);
+use File::Copy         qw(copy);
+use File::Path         qw(make_path);
+use File::Spec;
+use File::Temp qw(tempdir);
+use IPC::Open3 qw(open3);
 use JSON::PP;
+use Symbol qw(gensym);
 
 sub read_bytes {
     my ($path) = @_;
     open my $input, '<:raw', $path or die "Cannot read $path: $!";
-    my $bytes = do { local $/; <$input> };
+    my $bytes = do { local $/ = undef; <$input> };
     close $input or die $!;
     return $bytes;
 }
 
-my $manifest     = maniread();
-my $record       = JSON::PP->new->decode(read_bytes('docs/license-provenance.json'));
-my $license_hash = 'bae466ac8d7100c304fe76632ccc627203a3897d3f7166f3cce00fb9df8c2074';
-is(sha256_hex(read_bytes('LICENSE')),
-    $license_hash, 'complete Artistic 2.0 text remains the reviewed verbatim upstream copy');
-is($record->{license_file}{sha256}, $license_hash, 'provenance names that exact license text');
-is($record->{project_license},
-    'Artistic-2.0', 'project license remains separate from external terms');
-for my $path (qw(LICENSE NOTICE docs/licensing.md docs/license-provenance.json xt/licenses.t)) {
-    ok(exists($manifest->{$path}) && -s $path, "$path is included in the release inventory");
+sub write_bytes {
+    my ($path, $bytes) = @_;
+    make_path(dirname($path));
+    open my $output, '>:raw', $path or die $!;
+    print {$output} $bytes or die $!;
+    close $output          or die $!;
+    return;
 }
 
-my $upstream = $record->{reused_project_material};
-like($upstream->{reference_revision}, qr/\A[0-9a-f]{40}\z/x, 'source reference is immutable');
-is($upstream->{license}, 'Artistic-2.0', 'reused project material keeps its upstream license');
-my %seen;
-for my $file (@{$upstream->{files}}) {
-    my $path = $file->{path};
-    ok(!$seen{$path}++, "$path has one provenance record");
-    like($file->{reference_sha256}, qr/\A[0-9a-f]{64}\z/x, "$path has a reference-content hash");
-    if (!-f $path) {
-        ok(!exists $manifest->{$path},
-            "$path is repository-only material omitted from this archive");
-        next;
-    }
-    if ($file->{reuse} eq 'verbatim') {
-        is(
-            sha256_hex(read_bytes($path)),
-            $file->{reference_sha256},
-            "$path preserves the recorded upstream bytes and notices"
-        );
-    }
+my $checker = File::Spec->rel2abs('maint/check-licenses.pl');
+
+sub run_check {
+    my ($directory) = @_;
+    my $error       = gensym();
+    my $pid         = open3(undef, my $stdout, $error, $^X, $checker, $directory);
+    my $output      = do { local $/ = undef; <$stdout> };
+    my $errors      = do { local $/ = undef; <$error> };
+    close $stdout or die $!;
+    close $error  or die $!;
+    waitpid $pid, 0;
+    return ($?, ($output // '') . ($errors // ''));
 }
 
-my @media = grep { /\.(?:pdf|wav|mp3|ogg|flac|png|jpe?g|gif|svg|ttf|otf|woff2?|mp4|webm)\z/ix }
-    keys %{$manifest};
-is_deeply(\@media, [],
-    'current distribution policy excludes standards documents, received audio, images and fonts');
-for my $file (@{$record->{original_fixture_files}}) {
-    ok(exists($manifest->{$file}) && -s $file,
-        "$file has a declared original synthetic provenance");
+my ($status, $output) = run_check('.');
+is($status, 0, 'release inventory and original/external rights records pass offline')
+    or diag($output);
+like($output, qr/Licensing checks passed/, 'standalone checker reports its reviewed scope');
+
+my $temporary = tempdir(CLEANUP => 1);
+my $record    = JSON::PP->new->decode(read_bytes('docs/license-provenance.json'));
+my %files     = %{maniread()};
+$files{$_->{path}} = 1 for @{$record->{reused_project_material}{files}};
+$files{$_}         = 1 for glob '.github/workflows/*.yml';
+$files{$_}         = 1 for glob '.github/workflows/*.yaml';
+$files{$_}         = 1 for glob '.github/scripts/*.sh';
+for my $path (sort keys %files) {
+    next unless -f $path;
+    make_path(dirname("$temporary/$path"));
+    copy($path, "$temporary/$path") or die $!;
 }
-for my $publication (@{$record->{referenced_publications}}) {
-    ok(!$publication->{bundled}, "$publication->{title} is referenced, not bundled or relicensed");
-    like($publication->{source}, qr{\Ahttps://}x, 'publication source is retained');
+($status, $output) = run_check($temporary);
+is($status, 0, 'copied source distribution passes independently') or diag($output);
+
+sub rejected_change {
+    my ($label, $path, $replacement, $diagnostic) = @_;
+    my $target   = "$temporary/$path";
+    my $original = -f $target ? read_bytes($target) : undef;
+    write_bytes($target, $replacement);
+    my ($result, $message) = run_check($temporary);
+    isnt($result, 0, "$label blocks distribution");
+    like($message, $diagnostic, "$label explains the rights review needed");
+    if (defined $original) { write_bytes($target, $original) }
+    else                   { unlink $target or die $! }
+    return;
 }
-like(
-    read_bytes('NOTICE'),
-    qr{https://creativecommons\.org/licenses/by-sa/4\.0/legalcode\.en}x,
-    'IARU attribution includes the governing CC BY-SA terms'
+
+rejected_change(
+    'modified project license',
+    'LICENSE',
+    read_bytes('LICENSE') . "\nmodified\n",
+    qr/LICENSE checksum changed/
 );
-like(
-    read_bytes('maint/site.css'),
-    qr/Original[ ]Ham::CW[ ]documentation[ ]theme/x,
-    'shared stylesheet retains its original project notice'
+rejected_change(
+    'modified shared theme',
+    'maint/site.css',
+    "/* replaced theme notice */\n",
+    qr{maint/site.css checksum changed}
+);
+rejected_change(
+    'modified external license text',
+    'LICENSES/CC0-1.0.txt',
+    "CC0 summary\n",
+    qr{LICENSES/CC0-1.0.txt checksum changed}
+);
+rejected_change(
+    'missing release notice',
+    'MANIFEST',
+    read_bytes('MANIFEST') =~ s/^NOTICE\n//mr,
+    qr/NOTICE missing from release inventory/
+);
+rejected_change(
+    'floating action reference',
+    '.github/workflows/license-fixture.yml',
+    "steps:\n  - uses: actions/checkout\@main\n",
+    qr/needs a reviewed immutable reference/
+);
+rejected_change(
+    'unreviewed pinned action',
+    '.github/workflows/license-fixture.yml',
+    'steps:' . "\n  - uses: example/unreviewed\@" . ('a' x 40) . "\n",
+    qr/has no license record/
+);
+rejected_change(
+    'changed scanner version',
+    '.github/workflows/license-fixture.yml',
+    "run: go install github.com/zricethezav/gitleaks/v8\@v0.0.0\n",
+    qr/Go installer .* has no matching license record/
+);
+rejected_change(
+    'changed Python analyzer version',
+    '.github/workflows/license-fixture.yml',
+    "run: pip install 'zizmor==0.0.0'\n",
+    qr/Python installer .* has no matching license record/
 );
 
-my %tools;
-for my $tool (@{$record->{externally_invoked_tools}}) {
-    $tools{"$tool->{repository}\@$tool->{ref}"} = $tool;
-    ok(!$tool->{bundled}, "$tool->{repository} is not relicensed as bundled project code");
-    like(
-        $tool->{license_url},
-        qr{\Ahttps://github\.com/\Q$tool->{repository}\E/blob/\Q$tool->{ref}\E/}x,
-        "$tool->{repository} has a license link at the recorded revision"
-    );
-}
-for my $workflow (sort glob '.github/workflows/*.yml') {
-    my $text = read_bytes($workflow);
-    while ($text =~ /uses:\s+([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)\@([0-9a-f]{40})/gx) {
-        ok(exists $tools{"$1\@$2"}, "$workflow action pin has a reviewed license record");
-    }
-}
-if (-f '.github/scripts/portability.sh') {
-    my $script = read_bytes('.github/scripts/portability.sh');
-    my ($revision) = $script =~ m{miyagawa/cpanminus/([0-9a-f]{40})/cpanm}x;
-    ok(
-        defined($revision) && exists $tools{"miyagawa/cpanminus\@$revision"},
-        'external cpanminus bootstrap has its own recorded license'
-    );
-}
+rejected_change(
+    'floating action in flow YAML',
+    '.github/workflows/license-fixture.yaml',
+    "steps: [{\"uses\": 'actions/checkout\@main'}]\n",
+    qr/needs a reviewed immutable reference/
+);
+rejected_change(
+    'missing IARU attribution link',
+    'NOTICE',
+    read_bytes('NOTICE') =~ s{https://creativecommons.org/licenses/by-sa/4.0/legalcode.en}{}r,
+    qr/IARU licence link missing/
+);
+my $invalid_provenance = JSON::PP->new->decode(read_bytes('docs/license-provenance.json'));
+$invalid_provenance->{reused_project_material}{reference_revision} = 'main';
+rejected_change(
+    'floating project source provenance',
+    'docs/license-provenance.json',
+    JSON::PP->new->encode($invalid_provenance),
+    qr/project source reference must be an immutable revision/
+);
+
+my $schema_path = 'lib/Ham/QSO/_Internal/license-fixture.xsd';
+my $schema      = "<!-- Original synthetic licence-gate fixture; CC0-1.0 -->\n<schema/>\n";
+write_bytes("$temporary/$schema_path", $schema);
+my $manifest = read_bytes("$temporary/MANIFEST");
+write_bytes("$temporary/MANIFEST", $manifest . "$schema_path\n");
+($status, $output) = run_check($temporary);
+isnt($status, 0, 'unregistered bundled schema blocks distribution');
+like($output, qr/needs reviewed bundled-material provenance/,
+    'unregistered material is identified');
+
+my $fixture_record = JSON::PP->new->decode(read_bytes("$temporary/docs/license-provenance.json"));
+push @{$fixture_record->{bundled_material}},
+    {
+    path         => $schema_path,
+    source       => 'https://example.invalid/synthetic-fixture.xsd',
+    author       => 'Original synthetic test fixture',
+    license      => 'CC0-1.0',
+    license_file => 'LICENSES/CC0-1.0.txt',
+    modified     => JSON::PP::false,
+    sha256       => sha256_hex($schema)
+    };
+write_bytes("$temporary/docs/license-provenance.json", JSON::PP->new->encode($fixture_record));
+($status, $output) = run_check($temporary);
+is($status, 0, 'declared fixture with creator, source, exact bytes and full license passes')
+    or diag($output);
+rejected_change(
+    'altered reviewed schema',
+    $schema_path,
+    "$schema<!-- altered -->\n",
+    qr/checksum changed/
+);
+$fixture_record->{bundled_material}[-1]{license_file} = 'LICENSE';
+rejected_change(
+    'external material labelled with project license text', 'docs/license-provenance.json',
+    JSON::PP->new->encode($fixture_record),                 qr/needs its reviewed license text/
+);
+
 done_testing;

@@ -1,4 +1,6 @@
 {
+  "bundled_material": [],
+  "external_material_inventories": [],
   "externally_invoked_tools": [
     {
       "bundled": false,
@@ -44,8 +46,10 @@
     },
     {
       "bundled": false,
+      "go_module": "github.com/zricethezav/gitleaks/v8",
       "license": "MIT",
-      "license_url": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/LICENSE",
+      "license_revision": "83d9cd684c87d95d656c1458ef04895a7f1cbd8e",
+      "license_url": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/LICENSE",
       "ref": "v8.30.1",
       "repository": "gitleaks/gitleaks"
     },
@@ -58,8 +62,10 @@
     },
     {
       "bundled": false,
+      "go_module": "github.com/rhysd/actionlint/cmd/actionlint",
       "license": "MIT",
-      "license_url": "https://github.com/rhysd/actionlint/blob/v1.7.12/LICENSE.txt",
+      "license_revision": "914e7df21a07ef503a81201c76d2b11c789d3fca",
+      "license_url": "https://github.com/rhysd/actionlint/blob/914e7df21a07ef503a81201c76d2b11c789d3fca/LICENSE.txt",
       "ref": "v1.7.12",
       "repository": "rhysd/actionlint"
     },
@@ -87,7 +93,9 @@
     {
       "bundled": false,
       "license": "MIT",
-      "license_url": "https://github.com/zizmorcore/zizmor/blob/v1.31.1/LICENSE",
+      "license_revision": "effdb35fa7868863f11655db256d9008922fa427",
+      "license_url": "https://github.com/zizmorcore/zizmor/blob/effdb35fa7868863f11655db256d9008922fa427/LICENSE",
+      "python_distribution": "zizmor",
       "ref": "v1.31.1",
       "repository": "zizmorcore/zizmor"
     }
@@ -98,6 +106,14 @@
     "reuse": "verbatim license text",
     "sha256": "bae466ac8d7100c304fe76632ccc627203a3897d3f7166f3cce00fb9df8c2074"
   },
+  "license_texts": [
+    {
+      "license": "CC0-1.0",
+      "path": "LICENSES/CC0-1.0.txt",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "source": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt"
+    }
+  ],
   "original_fixture_files": [
     "corpus/semantic.json",
     "examples/complete-it-cw.jsonl"
@@ -133,9 +149,10 @@
         "source_path": ".editorconfig"
       },
       {
+        "adaptation": "Pin LF for license texts, notices, the shared CSS and verbatim configuration files so exact-content checks survive cross-platform checkouts.",
         "path": ".gitattributes",
         "reference_sha256": "d26d4822f02c7e366d339338368cfe094c59c15f7f110e4a12253488316e4b2c",
-        "reuse": "verbatim",
+        "reuse": "adapted",
         "source_path": ".gitattributes"
       },
       {
@@ -314,5 +331,6 @@
     "repository": "https://github.com/gipidevdor/ham-cw"
   },
   "reviewed_on": "2026-11-07",
+  "schema_version": 1,
   "scope": "Recorded project reuse, fixture provenance and directly invoked tools. This is not a transitive dependency SBOM or a grant of rights in external works."
 }

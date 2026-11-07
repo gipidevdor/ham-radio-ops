@@ -40,6 +40,7 @@ lib/Ham/QSO/Profile.pm
 lib/Ham/QSO/Result.pm
 lib/Ham/QSO/Session.pm
 LICENSE
+LICENSES/CC0-1.0.txt
 maint/archive.pl
 maint/audit-dependencies.pl
 maint/benchmark.pl
@@ -47,6 +48,7 @@ maint/build-site.pl
 maint/check-cli-install.pl
 maint/check-dist.pl
 maint/check-install.pl
+maint/check-licenses.pl
 maint/coverage.pl
 maint/site.css
 Makefile.PL

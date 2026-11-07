@@ -114,6 +114,10 @@ ok(
 );
 ok(-f "$site/.nojekyll", 'site is explicitly static');
 
+for my $path (qw(LICENSE NOTICE LICENSES/CC0-1.0.txt)) {
+    is(read_file("$site/$path"), read_file($path), "$path is downloadable without altered notices");
+}
+
 my $second = "$temporary/second";
 ($status, $output) = run_site('--output', $second);
 is($status,                         0,     'a second clean build succeeds') or diag($output);

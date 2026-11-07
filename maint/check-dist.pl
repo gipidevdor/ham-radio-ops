@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 use 5.020;
 use strict;
+use Carp qw(croak);
 use warnings;
 use Archive::Tar 3.10;
 use Module::CPANTS::Analyse;
@@ -8,6 +9,7 @@ use JSON::PP;
 use CPAN::Meta;
 use ExtUtils::MakeMaker ();
 use File::Spec;
+use FindBin qw($Bin);
 
 my ($path) = @ARGV;
 die "Usage: perl maint/check-dist.pl DISTRIBUTION.tar.gz\n" unless defined($path) && -f $path;
@@ -16,6 +18,11 @@ my $result    = $analysis->run;
 my $directory = $analysis->distdir;
 my $metadata  = CPAN::Meta->load_file(File::Spec->catfile($directory, 'META.json'));
 my %release_checks;
+open my $license_audit, '-|', $^X, File::Spec->catfile($Bin, 'check-licenses.pl'), $directory
+    or croak "Cannot run packaged license checks: $!";
+my $license_output = do { local $/ = undef; <$license_audit> };
+$release_checks{license_provenance} = close($license_audit) ? 1 : 0;
+
 for my $file (
     qw(README README.md LICENSE NOTICE SECURITY.md Changes Makefile.PL MANIFEST META.json META.yml bin/ham-qso)
     )
@@ -42,6 +49,7 @@ my $report         = {
     checks         => $result->{kwalitee},
     release_checks => \%release_checks,
     diagnostics    => $result->{error} // {},
+    licensing      => $license_output  // '',
 };
 print JSON::PP->new->canonical->pretty->encode($report);
 die "Failed archive indicators: @failed\n"       if @failed;
