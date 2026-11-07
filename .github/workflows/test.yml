@@ -29,6 +29,7 @@ jobs:
           # Upstream's default 5.40 Windows build has an incompatible XS import library.
           # Keep Windows coverage with a coherent Strawberry interpreter/toolchain.
           - {os: windows-latest, perl: '5.40', distribution: strawberry}
+          - {os: windows-latest, perl: '5.42', distribution: strawberry, xml: full}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -51,6 +52,8 @@ jobs:
           system $^X, '-V';
           die "Cannot inspect configured Perl\n" if $?;
       - name: Install build prerequisites
+        env:
+          QSO_XML_TESTS: ${{ matrix.xml || 'core' }}
         run: |
           use strict;
           use warnings;
@@ -61,7 +64,7 @@ jobs:
             system 'cpanm', @{$args};
             die "Dependency installation failed\n" if $?;
           }
-          if ($^O eq 'MSWin32') {
+          if ($ENV{QSO_XML_TESTS} eq 'full') {
             system 'cpanm', '--notest', '--skip-satisfied', 'XML::Parser~2.59', 'XML::LibXML~2.0213';
             die "Windows XML test dependency installation failed\n" if $?;
           }

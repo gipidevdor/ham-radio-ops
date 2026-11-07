@@ -31,7 +31,8 @@ against the bundled official schemas additionally requires XML::LibXML 2.0213+.
 These are separately installed dependencies, not bundled native libraries.
 The official CC0 schema files are installed with the library and need no network.
 
-Windows CI uses Strawberry Perl 5.40 with a matching native toolchain. This avoids
+Windows CI uses Strawberry Perl 5.40 for core compatibility and 5.42 for the full
+XML feature set, each with its matching native toolchain. This avoids
 the [reported XS incompatibility in the alternative upstream Windows build](https://github.com/shogo82148/actions-setup-perl/issues/2310).
 Build tools and native modules must belong to the same Perl installation.
 See the [dependency review](dependency-audit.md) for current audit findings.
