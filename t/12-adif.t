@@ -191,7 +191,13 @@ SKIP: {
     is($xml_declared->{format}, 'adx', 'format detected from XML declaration');
 }
 SKIP: {
-    eval { require XML::Parser; require XML::LibXML; 1 }
+    eval {
+        require XML::Parser;
+        XML::Parser->VERSION('2.59');
+        require XML::LibXML;
+        XML::LibXML->VERSION('2.0213');
+        1;
+    }
         or skip 'optional XML validators unavailable', 3;
     my $adx =
         $adif->encode(format => 'adx', header => \%header, types => \%types, records => \@records);
@@ -286,7 +292,13 @@ subtest 'ADIF data types and compatibility policies' => sub {
 
 subtest 'ADX default types and import compatibility' => sub {
     plan skip_all => 'optional XML parsers unavailable'
-        unless eval { require XML::Parser; require XML::LibXML; 1 };
+        unless eval {
+        require XML::Parser;
+        XML::Parser->VERSION('2.59');
+        require XML::LibXML;
+        XML::LibXML->VERSION('2.0213');
+        1;
+        };
     my $xml = '<?xml version="1.0"?><ADX><HEADER/><RECORDS><RECORD>'
         . '<APP PROGRAMID="EXAMPLE" FIELDNAME="TEXT">plain</APP></RECORD></RECORDS></ADX>';
     is($adif->decode($xml)->{types}{APP_EXAMPLE_TEXT},

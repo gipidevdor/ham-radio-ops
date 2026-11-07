@@ -23,6 +23,15 @@ my %fields    = (
     FREQ     => '14.025'
 );
 
+sub program_file {
+    my ($name, $program) = @_;
+    my $path = File::Spec->catfile($directory, "$name.pl");
+    open my $output, '>:raw', $path or die $!;
+    print {$output} $program or die $!;
+    close $output            or die $!;
+    return $path;
+}
+
 subtest 'Export enforces typed values and byte bounds' => sub {
     throws(
         'QSO_E_ADIF',
@@ -145,7 +154,13 @@ subtest 'Journal binds its path and normalizes interchange context' => sub {
 
 subtest 'ADX structure and resource location' => sub {
     plan skip_all => 'optional XML validators unavailable'
-        unless eval { require XML::Parser; require XML::LibXML; 1 };
+        unless eval {
+        require XML::Parser;
+        XML::Parser->VERSION('2.59');
+        require XML::LibXML;
+        XML::LibXML->VERSION('2.0213');
+        1;
+        };
     for my $name (qw(ADX HEADER RECORDS RECORD)) {
         my $bytes =
               '<?xml version="1.0"?><ADX><HEADER/><RECORDS><RECORD><'
@@ -172,7 +187,8 @@ subtest 'ADX structure and resource location' => sub {
           'use Ham::QSO::ADIF; use File::Temp qw(tempdir);'
         . 'my $a=Ham::QSO::ADIF->new;chdir tempdir(CLEANUP=>1) or die $!;'
         . '$a->validate_adx(q{<?xml version="1.0"?><ADX><HEADER/><RECORDS/></ADX>});';
-    is(system($^X, '-Ilib', '-e', $code),
+    my $script = program_file('schema-location', $code);
+    is(system($^X, '-Ilib', $script),
         0, 'relative library paths remain bound to their schemas after cwd changes');
     my $namespaced =
           '<?xml version="1.0"?><p:ADX xmlns:p="urn:test"><p:HEADER/><p:RECORDS><p:RECORD>'
@@ -335,12 +351,13 @@ subtest 'Interchange views are deterministic and preserve application identity' 
         . 'QSO_DATE=>"20261107",TIME_ON=>"120000",FREQ=>"14.025",ALPHA=>"a",BETA=>"b"},'
         . 'adif=>{header=>{USERDEF1=>"BETA",USERDEF2=>"ALPHA"},types=>{USERDEF1=>"S",USERDEF2=>"S"}});'
         . 'print $l->export_adif;';
+    my $script = program_file('seeded-export', $program);
     my @outputs;
     for my $seed (1, 42) {
         local $ENV{PERL_HASH_SEED}    = $seed;
         local $ENV{PERL_PERTURB_KEYS} = 2;
         my $error = gensym;
-        my $pid   = open3(my $input, my $output, $error, $^X, '-Ilib', '-e', $program);
+        my $pid   = open3(my $input, my $output, $error, $^X, '-Ilib', $script);
         close $input or die $!;
         push @outputs, do { local $/ = undef; <$output> };
         my $diagnostics = do { local $/ = undef; <$error> };

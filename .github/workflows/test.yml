@@ -61,6 +61,10 @@ jobs:
             system 'cpanm', @{$args};
             die "Dependency installation failed\n" if $?;
           }
+          if ($^O eq 'MSWin32') {
+            system 'cpanm', '--notest', '--skip-satisfied', 'XML::Parser~2.59', 'XML::LibXML~2.0213';
+            die "Windows XML test dependency installation failed\n" if $?;
+          }
           system $^X, '-MExtUtils::MakeMaker=7.22', '-MStorable=3.41', '-MDigest::SHA=5.96', '-MEncode=3.12', '-MCwd=3.65',
             '-e', 'print "Native dependencies load correctly\n"';
           die "Native dependency check failed\n" if $?;
