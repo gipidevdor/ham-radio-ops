@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 20
     defaults:
       run:
-        shell: bash
+        shell: perl {0}
     strategy:
       fail-fast: false
       matrix:
@@ -38,24 +38,50 @@ jobs:
           perl-version: ${{ matrix.perl }}
           distribution: ${{ matrix.distribution || 'default' }}
       - name: Verify the interpreter and bundled build tools
+        env:
+          QSO_RUNNER_OS: ${{ runner.os }}
         run: |
-          perl -V
-          perl -MExtUtils::MakeMaker -MPod::Man -e 'print "MakeMaker $ExtUtils::MakeMaker::VERSION; Pod::Man $Pod::Man::VERSION\n"'
+          use strict;
+          use warnings;
+          use ExtUtils::MakeMaker;
+          use Pod::Man;
+          my %platform = (Linux => 'linux', macOS => 'darwin', Windows => 'MSWin32');
+          die "Wrong Perl platform: $^O\n" if $^O ne $platform{$ENV{QSO_RUNNER_OS}};
+          print "Interpreter: $^X\nMakeMaker $ExtUtils::MakeMaker::VERSION; Pod::Man $Pod::Man::VERSION\n";
+          system $^X, '-V';
+          die "Cannot inspect configured Perl\n" if $?;
       - name: Install build prerequisites
         run: |
-          cpanm --verbose --notest --skip-satisfied 'ExtUtils::MakeMaker~7.22' 'Storable~3.41' 'Digest::SHA~5.96'
-          cpanm --notest --installdeps .
-          perl -MExtUtils::MakeMaker=7.22 -MStorable=3.41 -MDigest::SHA=5.96 -MEncode=3.12 -MCwd=3.65 -e 'print "Native dependencies load correctly\n"'
+          use strict;
+          use warnings;
+          for my $args (
+            ['--verbose', '--notest', '--skip-satisfied', 'ExtUtils::MakeMaker~7.22', 'Storable~3.41', 'Digest::SHA~5.96'],
+            ['--notest', '--installdeps', '.']
+          ) {
+            system 'cpanm', @{$args};
+            die "Dependency installation failed\n" if $?;
+          }
+          system $^X, '-MExtUtils::MakeMaker=7.22', '-MStorable=3.41', '-MDigest::SHA=5.96', '-MEncode=3.12', '-MCwd=3.65',
+            '-e', 'print "Native dependencies load correctly\n"';
+          die "Native dependency check failed\n" if $?;
       - name: Configure and test
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
         run: |
-          perl Makefile.PL
-          make
-          make test
-          perl -Ilib examples/run-all.pl
+          use strict;
+          use warnings;
+          use Config;
+          for my $command (
+            [$^X, 'Makefile.PL'], [$Config{make}], [$Config{make}, 'test'],
+            [$^X, '-Ilib', 'examples/run-all.pl']
+          ) {
+            system @{$command};
+            die "Build/test command failed: @{$command}\n" if $?;
+          }
       - name: Installed command and launcher
-        run: perl maint/check-cli-install.pl "cli-install tools" --build
+        run: |
+          system $^X, 'maint/check-cli-install.pl', 'cli-install tools', '--build';
+          die "Installed command check failed\n" if $?;
       - name: Preserve dependency build diagnostics on failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
