@@ -1,9 +1,19 @@
 Revision history for Ham-QSO
 
 0.001  2026-11-07
+    - Keep optional dependency paths available in temporary-directory documentation checks.
+    - Expand station-log documentation, executable archiving examples and Pages publication guidance.
+    - Reject malformed nested ADX, ambiguous application metadata and invalid typed exports.
+    - Keep numeric clocks/ranges exact and retain every historical ADIF region period.
+    - Bind logbook/schema paths, bound UTF-8 buffers and preflight durable batch imports.
+    - Cache schema/context validation and make ADIF declaration export deterministic.
+    - Integrated append-only station log, attributed corrections and trusted checkpoints.
+    - ADIF 3.1.8 ADI/ADX import/export, typed extensions and official CC0 schemas.
     - Initial development version for ordinary two-station CW and RTTY QSO semantics.
     - Versioned Italian and IARU profiles with explicit rule/source provenance.
     - Separate preparation, observed transmission, reports, acknowledgements and closure.
     - Preserve partial/uncertain input; invalidate proof after corrections.
+    - Reuse message parsers and index retained observations without duplicate JSON payloads.
+    - Preserve history when selecting a peer after earlier operator actions.
     - Optional real Ham::CW/Ham::RTTY adapters without PDL.
     - CPAN packaging, CLI, examples, author checks and shared documentation website.

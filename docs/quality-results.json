@@ -1,0 +1,368 @@
+{
+  "baseline_archive_sha256": "a11c2c10f4085eddeda687c5f864c093412a73084ae9486b990e9a738c8b3d55",
+  "baseline_production_sha256": {
+    "lib/Ham/QSO.pm": "d7a3992916433140f95ee261ae3aed81681969a7b366b5762cc66f68d3409df5",
+    "lib/Ham/QSO/ADIF.pm": "4c230e5d607966c2cdf12413c49eb29fa511f694dafc04b898c8ebd7e9657686",
+    "lib/Ham/QSO/Adapter.pm": "293ee9128b21f5a0a9d75907c9f9ec1a3783f26c0f6ae8f43c12079b7f45c55d",
+    "lib/Ham/QSO/Error.pm": "4d52d49e2dfa7921a620db3279aeddce697e89bb0ca1cd0346d34e8680e97094",
+    "lib/Ham/QSO/Logbook.pm": "85b33b6cd0a52790f233b38ace8033f357e7aaa530ae3d3d742d9ddd6e22d38d",
+    "lib/Ham/QSO/Message.pm": "83ec00a562fdc77794015c103d4cd60441870a2114fadce4bcbfbe052c879fc6",
+    "lib/Ham/QSO/Profile.pm": "c8ec03567dbccf853de786e577cb21bd114979809044fff2e9bb1357c19e9877",
+    "lib/Ham/QSO/Result.pm": "0976ad9cd527678f38be73018463d46618638c9666d7ea9a64ccf096b733fa4b",
+    "lib/Ham/QSO/Session.pm": "a60cc51abf7bbc47f640095afbc95ec485d85bd07cb17474b72b44f8ec21b5a3",
+    "lib/Ham/QSO/_Internal/ADIFData.pm": "01da533d80827765f0ab5bc43884dcbd29debb965d1c529b46f10832dc4ed41b",
+    "lib/Ham/QSO/_Internal/CLI.pm": "19c6ff50050ffa1fa99b8404f8aba4ec125ad45bf60c6bd4c4ff9428a3284f2b",
+    "lib/Ham/QSO/_Internal/Data.pm": "a1e4f678becafc4236c67a19da888ceb2d01d6f213a681f9ef42b46807fcf3e2",
+    "lib/Ham/QSO/_Internal/IO.pm": "b2be17a64543e09e501aa5ff7956dca9419dd2ee9a4e9bced4dddd6ef5d7e810",
+    "lib/Ham/QSO/_Internal/Validate.pm": "8f1cea0b9bc18ac70b5bfe9f08692dcd5d59b92d05715915f51cd2f57ad36658"
+  },
+  "benchmark": {
+    "datasets": [
+      {
+        "after": {
+          "archname": "darwin-thread-multi-2level",
+          "contacts": 128,
+          "date": "2026-11-07",
+          "input_sha256": "a24825c3d20bef45ea37fa767641e2b6508a111f5987323494561c8048fbdbc6",
+          "iterations": 5,
+          "os": "darwin",
+          "perl": "v5.44.0",
+          "results": {
+            "adi_decode": {
+              "median_seconds": 0.0142760276794434,
+              "samples_seconds": [
+                0.0142209529876709,
+                0.0142538547515869,
+                0.0142760276794434,
+                0.0143759250640869,
+                0.0144109725952148
+              ]
+            },
+            "adi_encode": {
+              "median_seconds": 0.0112638473510742,
+              "samples_seconds": [
+                0.0112321376800537,
+                0.011253833770752,
+                0.0112638473510742,
+                0.0112922191619873,
+                0.0113141536712646
+              ]
+            },
+            "adx_validation": {
+              "median_seconds": 0.00037693977355957,
+              "samples_seconds": [
+                0.000357151031494141,
+                0.000358819961547852,
+                0.00037693977355957,
+                0.000448942184448242,
+                0.00414204597473145
+              ]
+            },
+            "batch_import": {
+              "median_seconds": 0.0585269927978516,
+              "samples_seconds": [
+                0.0581591129302979,
+                0.0582900047302246,
+                0.0585269927978516,
+                0.0593550205230713,
+                0.0594239234924316
+              ]
+            },
+            "verified_export": {
+              "median_seconds": 0.0892980098724365,
+              "samples_seconds": [
+                0.0887761116027832,
+                0.0890629291534424,
+                0.0892980098724365,
+                0.089320182800293,
+                0.089320182800293
+              ]
+            }
+          },
+          "rss": "not measured",
+          "timer": "wall; batch import includes exclusive creation and durable commit"
+        },
+        "before": {
+          "archname": "darwin-thread-multi-2level",
+          "contacts": 128,
+          "date": "2026-11-07",
+          "input_sha256": "a24825c3d20bef45ea37fa767641e2b6508a111f5987323494561c8048fbdbc6",
+          "iterations": 5,
+          "os": "darwin",
+          "perl": "v5.44.0",
+          "results": {
+            "adi_decode": {
+              "median_seconds": 0.014070987701416,
+              "samples_seconds": [
+                0.0140590667724609,
+                0.0140659809112549,
+                0.014070987701416,
+                0.0140979290008545,
+                0.0142068862915039
+              ]
+            },
+            "adi_encode": {
+              "median_seconds": 0.0114259719848633,
+              "samples_seconds": [
+                0.0113952159881592,
+                0.0114078521728516,
+                0.0114259719848633,
+                0.011436939239502,
+                0.0114779472351074
+              ]
+            },
+            "adx_validation": {
+              "median_seconds": 0.00360393524169922,
+              "samples_seconds": [
+                0.00347495079040527,
+                0.00351285934448242,
+                0.00360393524169922,
+                0.00372886657714844,
+                0.00443482398986816
+              ]
+            },
+            "batch_import": {
+              "median_seconds": 0.0864248275756836,
+              "samples_seconds": [
+                0.0855867862701416,
+                0.0860390663146973,
+                0.0864248275756836,
+                0.0867512226104736,
+                0.0878348350524902
+              ]
+            },
+            "verified_export": {
+              "median_seconds": 0.0888810157775879,
+              "samples_seconds": [
+                0.088533878326416,
+                0.0887579917907715,
+                0.0888810157775879,
+                0.0891067981719971,
+                0.0892808437347412
+              ]
+            }
+          },
+          "rss": "not measured",
+          "timer": "wall; batch import includes exclusive creation and durable commit"
+        },
+        "same_input": true,
+        "speedup": {
+          "adi_decode": 0.9856374628411064,
+          "adi_encode": 1.014393362120061,
+          "adx_validation": 9.56103731815308,
+          "batch_import": 1.4766661235131162,
+          "verified_export": 0.9953303092034831
+        }
+      },
+      {
+        "after": {
+          "archname": "darwin-thread-multi-2level",
+          "contacts": 1024,
+          "date": "2026-11-07",
+          "input_sha256": "cceafe66a13144009523d53e096a57ccd332c2221641e496dd5f8e4e9d216f40",
+          "iterations": 3,
+          "os": "darwin",
+          "perl": "v5.44.0",
+          "results": {
+            "adi_decode": {
+              "median_seconds": 0.116089820861816,
+              "samples_seconds": [
+                0.115918874740601,
+                0.116089820861816,
+                0.116189002990723
+              ]
+            },
+            "adi_encode": {
+              "median_seconds": 0.0926949977874756,
+              "samples_seconds": [
+                0.0926749706268311,
+                0.0926949977874756,
+                0.092750072479248
+              ]
+            },
+            "adx_validation": {
+              "median_seconds": 0.000458002090454102,
+              "samples_seconds": [
+                0.000390052795410156,
+                0.000458002090454102,
+                0.00410914421081543
+              ]
+            },
+            "batch_import": {
+              "median_seconds": 0.463714122772217,
+              "samples_seconds": [
+                0.460695028305054,
+                0.463714122772217,
+                0.471397161483765
+              ]
+            },
+            "verified_export": {
+              "median_seconds": 0.711996078491211,
+              "samples_seconds": [
+                0.709558963775635,
+                0.711996078491211,
+                0.712759971618652
+              ]
+            }
+          },
+          "rss": "not measured",
+          "timer": "wall; batch import includes exclusive creation and durable commit"
+        },
+        "before": {
+          "archname": "darwin-thread-multi-2level",
+          "contacts": 1024,
+          "date": "2026-11-07",
+          "input_sha256": "cceafe66a13144009523d53e096a57ccd332c2221641e496dd5f8e4e9d216f40",
+          "iterations": 3,
+          "os": "darwin",
+          "perl": "v5.44.0",
+          "results": {
+            "adi_decode": {
+              "median_seconds": 0.11453104019165,
+              "samples_seconds": [
+                0.113723993301392,
+                0.11453104019165,
+                0.114797115325928
+              ]
+            },
+            "adi_encode": {
+              "median_seconds": 0.0932149887084961,
+              "samples_seconds": [
+                0.0927979946136475,
+                0.0932149887084961,
+                0.0932619571685791
+              ]
+            },
+            "adx_validation": {
+              "median_seconds": 0.00368905067443848,
+              "samples_seconds": [
+                0.00358986854553223,
+                0.00368905067443848,
+                0.00437498092651367
+              ]
+            },
+            "batch_import": {
+              "median_seconds": 0.908241987228394,
+              "samples_seconds": [
+                0.903113126754761,
+                0.908241987228394,
+                0.917953014373779
+              ]
+            },
+            "verified_export": {
+              "median_seconds": 0.719618082046509,
+              "samples_seconds": [
+                0.710208892822266,
+                0.719618082046509,
+                0.729072093963623
+              ]
+            }
+          },
+          "rss": "not measured",
+          "timer": "wall; batch import includes exclusive creation and durable commit"
+        },
+        "same_input": true,
+        "speedup": {
+          "adi_decode": 0.9865726326512171,
+          "adi_encode": 1.005609697755349,
+          "adx_validation": 8.054659031754294,
+          "batch_import": 1.9586248134921165,
+          "verified_export": 1.0107051201341581
+        }
+      }
+    ],
+    "scope": "Sequential local runs without concurrent tests/coverage; repeated-call medians include first schema compilation; no RSS or cross-platform claim",
+    "script": "maint/benchmark-logbook.pl",
+    "script_sha256": "6303fe551273173e1d980555ac7745ddd839ceb083953106f345a0fcdde37f33"
+  },
+  "checks": {
+    "coverage": {
+      "measured": {
+        "branch": {
+          "covered": 977,
+          "error": 91,
+          "percentage": 91.4794007490637,
+          "total": 1068,
+          "uncoverable": 0
+        },
+        "statement": {
+          "covered": 1941,
+          "error": 12,
+          "percentage": 99.3855606758833,
+          "total": 1953
+        },
+        "total": {
+          "covered": 2918,
+          "error": 103,
+          "percentage": 96.5905329361139,
+          "total": 3021,
+          "uncoverable": 0
+        }
+      },
+      "minimum_branch_percentage": 90,
+      "minimum_statement_percentage": 95,
+      "status": "PASS"
+    },
+    "official_schema_bytes_and_notices": "PASS; official schemas unmodified",
+    "ordinary_and_author_suite": {
+      "files": 23,
+      "status": "PASS",
+      "top_level_assertions": 1990
+    },
+    "ordinary_suite": {
+      "actual_cw_rtty_codecs": true,
+      "files": 14,
+      "status": "PASS",
+      "top_level_assertions": 1526
+    },
+    "registry_regeneration": "byte-identical after pinned formatting",
+    "release": {
+      "archive_metadata_and_inventory": "PASS",
+      "distcheck": "PASS",
+      "disttest": {
+        "files": 14,
+        "status": "PASS",
+        "top_level_assertions": 1526
+      },
+      "installed_logbook_example": "PASS",
+      "installed_official_adx_schema_validation": "PASS",
+      "isolated_installation": "PASS",
+      "optional_codec_skips_in_isolated_install": "Explicit; real sibling codecs exercised separately in the full ordinary suite",
+      "status": "PASS"
+    },
+    "source_hash_consistency": "PASS"
+  },
+  "corrected_contracts": [
+    "nested ADX containers and namespaced attributes",
+    "exact decimals, fractional integer clocks, and every historical region period",
+    "typed empty exports, explicit indicators and bounded UTF-8 output",
+    "stable log/schema paths across working-directory changes",
+    "canonical extension metadata and deterministic declaration numbering",
+    "ambiguous application identities cannot overwrite source metadata",
+    "bounded line scanning and invalid Unicode rejection before journal append",
+    "all batch records preflighted before writing with one durability barrier"
+  ],
+  "limitations": [
+    "macOS ARM64 / Perl 5.44 local verification; no new OS matrix run",
+    "WORM, authenticated signing and qualified timestamp services remain deployment concerns",
+    "no new dependency/vulnerability audit",
+    "performance figures are workload-specific local medians, not timing guarantees"
+  ],
+  "measured_on": "2026-11-07",
+  "production_module_sha256": {
+    "lib/Ham/QSO.pm": "d7a3992916433140f95ee261ae3aed81681969a7b366b5762cc66f68d3409df5",
+    "lib/Ham/QSO/ADIF.pm": "196b5fe408f6f68b94522a2a83403d7f5f9bfe40747194a951dbd91cd8cedd27",
+    "lib/Ham/QSO/Adapter.pm": "293ee9128b21f5a0a9d75907c9f9ec1a3783f26c0f6ae8f43c12079b7f45c55d",
+    "lib/Ham/QSO/Error.pm": "4d52d49e2dfa7921a620db3279aeddce697e89bb0ca1cd0346d34e8680e97094",
+    "lib/Ham/QSO/Logbook.pm": "f26ae4d06343c6a522d958014292ffa7fa32c52ac684ae0cf6401e4e1dd11e97",
+    "lib/Ham/QSO/Message.pm": "83ec00a562fdc77794015c103d4cd60441870a2114fadce4bcbfbe052c879fc6",
+    "lib/Ham/QSO/Profile.pm": "c8ec03567dbccf853de786e577cb21bd114979809044fff2e9bb1357c19e9877",
+    "lib/Ham/QSO/Result.pm": "0976ad9cd527678f38be73018463d46618638c9666d7ea9a64ccf096b733fa4b",
+    "lib/Ham/QSO/Session.pm": "a60cc51abf7bbc47f640095afbc95ec485d85bd07cb17474b72b44f8ec21b5a3",
+    "lib/Ham/QSO/_Internal/ADIFData.pm": "13f876d63847f091e92668fdc9015008b1d040b1df7750f064add3c70adfeb51",
+    "lib/Ham/QSO/_Internal/CLI.pm": "19c6ff50050ffa1fa99b8404f8aba4ec125ad45bf60c6bd4c4ff9428a3284f2b",
+    "lib/Ham/QSO/_Internal/Data.pm": "a1e4f678becafc4236c67a19da888ceb2d01d6f213a681f9ef42b46807fcf3e2",
+    "lib/Ham/QSO/_Internal/IO.pm": "b2be17a64543e09e501aa5ff7956dca9419dd2ee9a4e9bced4dddd6ef5d7e810",
+    "lib/Ham/QSO/_Internal/Validate.pm": "cb1ecdfa2980592f04a461be3b3980f966869eb6234e58141e802fdc20e3c37c"
+  }
+}

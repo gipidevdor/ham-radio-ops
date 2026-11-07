@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | [messages.pl](messages.pl) | Compose and analyse supported/partial messages | None |
 | [session.pl](session.pl) | Replay an original synthetic complete Italian-profile exchange | None |
+| [logbook.pl](logbook.pl) | Preserve a station contact and correction; export ADI/ADX | XML modules only for the optional official-schema check |
 | [codecs.pl](codecs.pl) | Use actual codec encoding and WAV generation without recording TX | Ham::CW or Ham::RTTY |
 | [complete-it-cw.jsonl](complete-it-cw.jsonl) | Explicit event fixture for `ham-qso replay` | None |
 

@@ -1,6 +1,11 @@
 {
   "bundled_material": [],
-  "external_material_inventories": [],
+  "external_material_inventories": [
+    {
+      "collection": "bundled_schemas",
+      "path": "docs/adif-sources.json"
+    }
+  ],
   "externally_invoked_tools": [
     {
       "bundled": false,
@@ -149,7 +154,7 @@
         "source_path": ".editorconfig"
       },
       {
-        "adaptation": "Pin LF for license texts, notices, the shared CSS and verbatim configuration files so exact-content checks survive cross-platform checkouts.",
+        "adaptation": "Pin LF for license texts, notices, the shared CSS and verbatim configuration files so exact-content checks survive cross-platform checkouts. Preserve the unmodified official CC0 ADX schema bytes by disabling text normalization for .xsd files.",
         "path": ".gitattributes",
         "reference_sha256": "d26d4822f02c7e366d339338368cfe094c59c15f7f110e4a12253488316e4b2c",
         "reuse": "adapted",

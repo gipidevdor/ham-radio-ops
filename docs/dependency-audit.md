@@ -11,6 +11,13 @@ Author tools and the documentation builder are declared separately in Makefile.P
 The documentation builder uses [Pod::Simple](https://metacpan.org/pod/Pod::Simple),
 Markdown::Perl, PPI and HTML/URI tools, and requires Perl 5.26+.
 
+The integrated station journal additionally uses core Digest::SHA 5.96+,
+Time::HiRes, POSIX and Encode. ADX import optionally loads XML::Parser 2.59+;
+official XSD validation optionally loads XML::LibXML 2.0213+ and its native
+dependencies. These optional libraries are separately installed and are not
+bundled in the distribution. Their licensing is recorded in
+[ADIF provenance](adif-sources.json); this record is not a vulnerability audit.
+
 A successful build, style check or codec test is not a vulnerability audit. No
 clean security-audit claim is made here. The source family has identified
 Perl/File::Temp and dependency advisories; use a maintained, patched Perl and

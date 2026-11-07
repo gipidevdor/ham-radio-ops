@@ -264,25 +264,24 @@ sub _identification_consistency {
 
 sub feed {
     my ($self, @pairs) = @_;
-    my ($input, $analysis, $identification) = $self->_event_input(@pairs);
-    my %event   = %{$input};
-    my $encoded = JSON::PP->new->canonical->encode(\%event);
-    if (exists $self->{ids}{$event{id}}) {
+    my ($event, $analysis, $identification) = $self->_event_input(@pairs);
+    if (my $previous = $self->{ids}{$event->{id}}) {
+        my $json = JSON::PP->new->canonical;
         fail('QSO_E_DUPLICATE', 'An event ID was reused for different evidence')
-            if $self->{ids}{$event{id}} ne $encoded;
+            if $json->encode($previous->{event}) ne $json->encode($event);
         return $self->snapshot;
     }
     fail('QSO_E_RESOURCE', 'Session event limit exceeded')
         if @{$self->{history}} >= $self->{max_events};
     fail('QSO_E_SEQUENCE', 'Events must be chronological and nonoverlapping')
-        if $event{at_ms} < $self->{clock_end};
+        if $event->{at_ms} < $self->{clock_end};
 
     # All validation precedes mutation. Observed violations remain in the record.
     my @diagnostics = @{$analysis->diagnostics};
-    $self->_identification_consistency(\%event, \@diagnostics);
-    delete $self->{ack_context}{$event{direction}}
-        if $analysis->status ne 'supported' || $event{uncertain};
-    if ($event{uncertain}) {
+    $self->_identification_consistency($event, \@diagnostics);
+    delete $self->{ack_context}{$event->{direction}}
+        if $analysis->status ne 'supported' || $event->{uncertain};
+    if ($event->{uncertain}) {
         _diagnostic(\@diagnostics, 'QSO_W_UNCERTAIN',
             'Reception or transmission is uncertain; facts withheld',
             'ENG-R001', 'unknown');
@@ -299,19 +298,19 @@ sub feed {
             $identification->{status} eq 'violated' ? 'violation' : 'unknown'
         );
     }
-    $self->_apply(\%event, $analysis->message, \@diagnostics)
-        if $analysis->status eq 'supported' && !$event{uncertain};
-    for my $diagnostic (@diagnostics) { $diagnostic->{event_id} = $event{id} }
+    $self->_apply($event, $analysis->message, \@diagnostics)
+        if $analysis->status eq 'supported' && !$event->{uncertain};
+    for my $diagnostic (@diagnostics) { $diagnostic->{event_id} = $event->{id} }
     push @{$self->{diagnostics}}, @diagnostics;
-    push @{$self->{history}},
-        {
-        event          => dclone(\%event),
+    my $observation = {
+        event          => dclone($event),
         analysis       => $analysis->as_hash,
         identification => $identification,
         diagnostics    => dclone(\@diagnostics)
-        };
-    $self->{ids}{$event{id}} = $encoded;
-    $self->{clock_end} = $event{at_ms} + $event{duration_ms};
+    };
+    push @{$self->{history}}, $observation;
+    $self->{ids}{$event->{id}} = $observation;
+    $self->{clock_end} = $event->{at_ms} + $event->{duration_ms};
     $self->{revision}++;
     $self->{lifecycle} = 'ACTIVE';
     return $self->snapshot;
@@ -326,8 +325,8 @@ sub select_peer {
         if !is_callsign($args{callsign})
         || !defined($args{evidence_id})
         || ref($args{evidence_id});
-    my ($evidence) = grep { $_->{event}{id} eq $args{evidence_id} } @{$self->{history}};
-    my $message = $evidence ? $evidence->{analysis}{message} : undef;
+    my $evidence = $self->{ids}{$args{evidence_id}};
+    my $message  = $evidence ? $evidence->{analysis}{message} : undef;
     fail('QSO_E_SEQUENCE',
         'Peer selection requires certain, fully parsed RX evidence addressed to this station')
         if !$message

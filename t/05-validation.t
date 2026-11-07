@@ -81,6 +81,25 @@ throws(
     sub { $other->select_peer(callsign => 'IU0?') },
     'partial operator selection'
 );
+my %tx = (
+    %base,
+    direction       => 'tx',
+    text            => 'DL1ABC DE IU0ABC KN',
+    identifications => [{start_ms => 0, end_ms => 1000}]
+);
+my $recorded = $other->feed(%tx)->as_hash;
+$tx{identifications}[0]{end_ms} = 999;
+is_deeply($other->snapshot->as_hash, $recorded, 'caller mutation cannot alter indexed evidence');
+throws('QSO_E_DUPLICATE', sub { $other->feed(%tx) }, 'changed nested replay conflicts');
+is_deeply($other->snapshot->as_hash, $recorded, 'conflicting nested replay is atomic');
+my %replay = (
+    %tx,
+    at_ms           => '0.0',
+    duration_ms     => '1e3',
+    identifications => [{end_ms => 1000, start_ms => 0}]
+);
+is_deeply($other->feed(%replay)->as_hash,
+    $recorded, 'equivalent numeric inputs and reordered span keys replay identically');
 my $cyclic = {};
 $cyclic->{self} = $cyclic;
 throws('QSO_E_ARGUMENT', sub { Ham::QSO::Result->new(data => $cyclic) }, 'cyclic result');
