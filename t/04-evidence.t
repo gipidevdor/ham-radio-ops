@@ -1,0 +1,69 @@
+use 5.020;
+use strict;
+use warnings FATAL => 'all';
+use Test::More;
+use lib 't/lib';
+use QSOTest qw(throws event completed);
+use Ham::QSO;
+my $qso     = Ham::QSO->new;
+my $session = $qso->session(station => 'IU0ABC');
+
+for my $text (
+    'IU0ABC DE DL1? R RST 599 KN',
+    'IU0? DE DL1ABC R RST 599 KN',
+    'IU0ABC DE DL1ABC NAME MARIO RST 599 KN'
+    )
+{
+    $session->reset;
+    event($session, 1, 'rx', $text);
+    ok(!defined $session->snapshot->as_hash->{peer}, 'unknown text selects no peer');
+    is_deeply($session->snapshot->facts, {}, 'unknown text proves no facts');
+}
+$session->reset;
+event($session, 1, 'rx', 'IU0ABC DE DL1ABC RST 599 KN', uncertain => 1);
+is_deeply($session->snapshot->facts, {}, 'uncertain full text proves nothing');
+$session->reset;
+event($session, 1, 'rx', 'IU0ABC DE DL1ABC R KN');
+ok(!$session->snapshot->facts->{received_ack_for}, 'context-free R is not backfilled later');
+event($session, 2, 'tx', 'DL1ABC DE IU0ABC RST 579 KN');
+ok(!$session->snapshot->facts->{received_ack_for}, 'no retroactive acknowledgement');
+$session->reset;
+completed($session);
+my $facts_before_foreign_cq = $session->snapshot->facts;
+$session->receive('CQ DE F1ABC K', id => 'foreign-cq', at_ms => 29000, duration_ms => 500);
+is_deeply($session->snapshot->facts,
+    $facts_before_foreign_cq, 'unaddressed third-station CQ changes no contact facts or turn');
+event($session, 4, 'rx', 'IU0ABC DE DL1ABC RST 589 KN');
+ok($session->snapshot->complete, 'same report repetition preserves acknowledgement');
+event($session, 5, 'rx', 'IU0ABC DE DL1ABC RST 559 KN');
+ok(!$session->snapshot->complete && !$session->snapshot->facts->{sent_ack_for},
+    'corrected RX report invalidates local ack');
+event($session, 6, 'tx', 'DL1ABC DE IU0ABC R KN');
+ok($session->snapshot->complete, 'explicit new acknowledgement restores proof');
+event($session, 7, 'tx', 'DL1ABC DE IU0ABC RST 569 KN');
+ok(!$session->snapshot->complete && !$session->snapshot->facts->{received_ack_for},
+    'corrected TX report invalidates remote ack');
+event($session, 8, 'rx', 'IU0ABC DE DL1ABC R KN');
+ok($session->snapshot->complete, 'new remote ack restores proof');
+event($session, 9, 'rx', 'G4ABC DE DL1ABC RST 111 KN');
+is($session->snapshot->facts->{received_report}{value},
+    '559', 'wrong recipient cannot change report');
+event($session, 10, 'rx', 'IU0ABC DE F1ABC RST 119 KN');
+is($session->snapshot->as_hash->{peer}, 'DL1ABC', 'no silent peer replacement');
+throws(
+    'QSO_E_SEQUENCE',
+    sub { $session->select_peer(callsign => 'F1XYZ', evidence_id => 'e10') },
+    'no invented peer'
+);
+$session->select_peer(callsign => 'F1ABC', evidence_id => 'e10');
+is($session->snapshot->as_hash->{peer}, 'F1ABC', 'explicit correction backed by actual text');
+ok(!$session->snapshot->complete && !$session->snapshot->facts->{sent_report},
+    'correction clears dependent evidence');
+my $copy = $session->snapshot->history;
+$copy->[0]{event}{text} = 'changed';
+isnt($session->snapshot->history->[0]{event}{text}, 'changed', 'history accessor copies');
+my $other = $qso->session(station => 'IU0ABC');
+event($other, 1, 'tx', 'DL1ABC DE F1ABC RST 599 KN');
+is_deeply($other->snapshot->facts, {}, 'mismatched actual source proves no exchange');
+is($other->snapshot->conformance->{status}, 'violated', 'source conflict is explicit');
+done_testing;

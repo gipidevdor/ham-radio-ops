@@ -1,0 +1,5 @@
+{"at_ms": 0, "direction": "tx", "duration_ms": 9000, "id": "s1", "identifications": [{"end_ms": 2000, "start_ms": 0}, {"end_ms": 9000, "start_ms": 7000}], "text": "DL1ABC DE IU0ABC RST 579 DL1ABC DE IU0ABC KN"}
+{"at_ms": 10000, "direction": "rx", "duration_ms": 9000, "id": "s2", "text": "IU0ABC DE DL1ABC R RST 589 KN"}
+{"at_ms": 20000, "direction": "tx", "duration_ms": 9000, "id": "s3", "identifications": [{"end_ms": 2000, "start_ms": 0}, {"end_ms": 9000, "start_ms": 7000}], "text": "DL1ABC DE IU0ABC R DL1ABC DE IU0ABC KN"}
+{"at_ms": 30000, "direction": "rx", "duration_ms": 9000, "id": "s4", "text": "IU0ABC DE DL1ABC 73 <SK>"}
+{"at_ms": 40000, "direction": "tx", "duration_ms": 9000, "id": "s5", "identifications": [{"end_ms": 2000, "start_ms": 0}, {"end_ms": 9000, "start_ms": 7000}], "text": "DL1ABC DE IU0ABC 73 DL1ABC DE IU0ABC <SK>"}

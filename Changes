@@ -1,0 +1,9 @@
+Revision history for Ham-QSO
+
+0.001  2026-11-07
+    - Initial development version for ordinary two-station CW and RTTY QSO semantics.
+    - Versioned Italian and IARU profiles with explicit rule/source provenance.
+    - Separate preparation, observed transmission, reports, acknowledgements and closure.
+    - Preserve partial/uncertain input; invalidate proof after corrections.
+    - Optional real Ham::CW/Ham::RTTY adapters without PDL.
+    - CPAN packaging, CLI, examples, author checks and shared documentation website.

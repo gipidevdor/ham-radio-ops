@@ -1,0 +1,20 @@
+#!/usr/bin/env perl
+use 5.020;
+use strict;
+use warnings;
+use Carp       qw(croak);
+use File::Temp qw(tempdir);
+use File::Spec;
+use Ham::QSO;
+my $mode = shift(@ARGV) // 'cw';
+croak 'Expected cw or rtty' unless $mode eq 'cw' || $mode eq 'rtty';
+my $qso      = Ham::QSO->new(profile => "it-$mode");
+my $adapter  = $qso->adapter;
+my $session  = $qso->session(station => 'IU0ABC');
+my $proposal = $session->prepare(kind => 'cq');
+my $symbols  = $adapter->encode($proposal);
+croak 'Symbolic integration failed' unless $adapter->decode($symbols)->status eq 'supported';
+my $directory = tempdir(CLEANUP => 1);
+$adapter->write_wav($proposal, File::Spec->catfile($directory, 'practice.wav'));
+croak 'Generating audio fabricated transmission' unless $session->snapshot->revision == 0;
+print "$mode codec and WAV generated; session remains READY\n";

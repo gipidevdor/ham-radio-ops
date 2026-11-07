@@ -1,0 +1,46 @@
+#!/usr/bin/env perl
+use 5.020;
+use strict;
+use warnings;
+use Ham::QSO::_Internal::CLI;
+local $SIG{PIPE} = 'IGNORE' if exists $SIG{PIPE};
+exit Ham::QSO::_Internal::CLI::run(\@ARGV, \*STDIN, \*STDOUT, \*STDERR);
+
+=encoding UTF-8
+
+=head1 NAME
+
+ham-qso - strict QSO message analysis, evidence replay and CW/RTTY integration
+
+=head1 SYNOPSIS
+
+    ham-qso compose --station IU0ABC --kind cq
+    ham-qso parse --json 'IU0ABC DE DL1ABC RST 579 KN'
+    ham-qso replay --station IU0ABC --input examples/complete-it-cw.jsonl --strict
+    ham-qso encode 'CQ DE IU0ABC K'
+    ham-qso wav --output practice.wav 'CQ DE IU0ABC K'
+    ham-qso profiles --profile it-rtty
+    ham-qso help
+
+=head1 DESCRIPTION
+
+See C<ham-qso help> for command options. Default profile is it-cw. Core commands
+require no codec or PDL. encode/decode/wav/receive load the selected optional
+Ham::CW or Ham::RTTY. All output goes to stdout unless --output is supplied;
+diagnostics go to stderr. Existing paths require explicit --overwrite. Inputs
+are bounded to 16 MiB and each message to 8192 characters. Replay takes one JSON
+object per line with the Session feed schema, or operator select_peer/abort records.
+No command operates a radio, microphone or playback device.
+
+=head1 EXIT STATUS
+
+0 success; 1 with --strict for unsupported/ambiguous/violating analysis, uncertain
+audio, or incomplete/nonconforming replay; 2 invalid arguments, missing optional
+dependencies or input/output failure. Checked scope is reported explicitly;
+success never certifies complete compliance with Italian or international law.
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0.
+
+=cut

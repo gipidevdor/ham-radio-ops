@@ -1,0 +1,20 @@
+Ham::QSO / ham-radio-ops
+Copyright (c) 2026 Giacomo Picchiarelli.
+
+Code and original documentation: Artistic License 2.0 (LICENSE).
+
+The project follows the author's ham-cw and ham-rtty repository conventions.
+Data validation, structured Error, file handling, formatter/critic settings,
+documentation site builder/style, archive and coverage/release checks are adapted
+from Ham::CW by the same author under Artistic License 2.0. Their QSO adaptations
+and all semantic/session implementation are in this distribution.
+
+Referenced standards and legislation are external sources, not bundled code.
+IARU EOP fourth edition v4.2.0 is copyright IARU Region 1, 2026, CC BY-SA 4.0.
+No copy or translation of that publication is included. ITU recommendations and
+Italian official publications retain their own terms. Source links, sections and
+original implementation summaries are in docs/standards.md and Profile.pm.
+
+All corpus transcripts and generated test signals here are original synthetic
+examples under Artistic License 2.0. Callsigns in fixtures are illustrative and
+confer no assignment or permission. No third-party recordings are distributed.
