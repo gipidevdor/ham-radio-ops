@@ -1,6 +1,7 @@
 Revision history for Ham-QSO
 
 0.001  2026-11-07
+    - Release cached native XML schemas before interpreter global destruction.
     - Check optional XML versions in examples/tests and avoid shell quoting of child programs.
     - Record dated CI/audit evidence, patched dependency minimums and remaining upstream findings.
     - Require patched Encode/PathTools releases and install all runtime prerequisites in CI.

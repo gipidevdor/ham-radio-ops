@@ -71,34 +71,6 @@ jobs:
           system $^X, '-MExtUtils::MakeMaker=7.22', '-MStorable=3.41', '-MDigest::SHA=5.96', '-MEncode=3.12', '-MCwd=3.65',
             '-e', 'print "Native dependencies load correctly\n"';
           die "Native dependency check failed\n" if $?;
-      - name: Isolate native XML lifecycle failures
-        if: ${{ matrix.xml == 'full' }}
-        run: |
-          use strict;
-          use warnings;
-          use File::Temp qw(tempdir);
-          my $directory = tempdir(CLEANUP => 1);
-          my @probes = (
-            ['parser', q{use XML::Parser; XML::Parser->new->parse('<ADX/>'); print "parsed\n";}],
-            ['document', q{use XML::LibXML; my $d=XML::LibXML->load_xml(string=>'<ADX/>'); print "parsed\n"; undef $d; print "released\n";}],
-            ['schema', q{use XML::LibXML; my $s=XML::LibXML::Schema->new(location=>'lib/Ham/QSO/_Internal/adx318.xsd'); my $d=XML::LibXML->load_xml(string=>'<ADX><HEADER/><RECORDS/></ADX>'); $s->validate($d); print "validated\n"; undef $d; undef $s; print "released\n";}],
-            ['application', q{use Ham::QSO::ADIF; Ham::QSO::ADIF->new->validate_adx('<ADX><HEADER/><RECORDS/></ADX>'); print "validated\n";}],
-            ['namespace', q{use Ham::QSO::ADIF; Ham::QSO::ADIF->new->validate_adx('<p:ADX xmlns:p="urn:test"><p:HEADER/><p:RECORDS/></p:ADX>'); print "validated\n";}]
-          );
-          my $failed = 0;
-          for my $probe (@probes) {
-            my ($name, $program) = @{$probe};
-            my $path = "$directory/$name.pl";
-            open my $output, '>', $path or die $!;
-            print {$output} '$|=1; print "loaded\\n";' . $program or die $!;
-            close $output or die $!;
-            print "XML PROBE $name\n";
-            system $^X, '-Ilib', $path;
-            my $status = $?;
-            print "XML PROBE $name status $status\n";
-            $failed ||= $status;
-          }
-          die "Native XML lifecycle check failed\n" if $failed;
       - name: Configure and test
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all

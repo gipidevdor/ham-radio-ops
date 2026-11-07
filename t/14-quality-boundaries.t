@@ -186,10 +186,11 @@ subtest 'ADX structure and resource location' => sub {
     my $code =
           'use Ham::QSO::ADIF; use File::Temp qw(tempdir);'
         . 'my $a=Ham::QSO::ADIF->new;chdir tempdir(CLEANUP=>1) or die $!;'
-        . '$a->validate_adx(q{<?xml version="1.0"?><ADX><HEADER/><RECORDS/></ADX>});';
+        . 'my $x=q{<?xml version="1.0"?><ADX><HEADER/><RECORDS/></ADX>};'
+        . '$a->validate_adx($x);$a->validate_adx($x,direction=>q{import});';
     my $script = program_file('schema-location', $code);
     is(system($^X, '-Ilib', $script),
-        0, 'relative library paths remain bound to their schemas after cwd changes');
+        0, 'schema paths survive cwd changes and cached validators release cleanly at exit');
     my $namespaced =
           '<?xml version="1.0"?><p:ADX xmlns:p="urn:test"><p:HEADER/><p:RECORDS><p:RECORD>'
         . '<p:APP p:PROGRAMID="EXAMPLE" p:FIELDNAME="COUNT" p:TYPE="N">7</p:APP>'

@@ -25,14 +25,14 @@ in the samples. Batch import includes exclusive file creation and a durable comm
 
 | Workload (1024 synthetic contacts) | Before | After | Ratio |
 | --- | ---: | ---: | ---: |
-| ADI encoding | 93.215 ms | 92.695 ms | 1.01x |
-| ADI decoding | 114.531 ms | 116.090 ms | 0.99x |
-| Repeated ADX validation (one contact) | 3.689 ms | 0.458 ms | 8.05x |
-| Durable batch import | 908.242 ms | 463.714 ms | 1.96x |
-| Fully verified export | 719.618 ms | 711.996 ms | 1.01x |
+| ADI encoding | 238.324 ms | 140.864 ms | 1.69x |
+| ADI decoding | 261.284 ms | 179.283 ms | 1.46x |
+| Repeated ADX validation (one contact) | 6.716 ms | 0.684 ms | 9.82x |
+| Durable batch import | 8769.345 ms | 761.630 ms | 11.51x |
+| Fully verified export | 1122.519 ms | 1074.894 ms | 1.04x |
 
 The raw record also contains the smaller 128-contact workload, every sample,
 interpreter/platform details, archive/source hashes and verification scope.
-ADI encode/decode and verified export remain approximately stable; speed claims
-apply to the measured repeated validation and batch-import paths. Full journal
+Each ratio describes these local medians. Batch-import comparisons include
+filesystem sync cost, which varies with the storage environment. Full journal
 verification is retained. RSS and other platforms are unmeasured.

@@ -15,11 +15,11 @@ editions; they do not certify all Italian or international radio-law obligations
 
 | Check | Observed result |
 | --- | --- |
-| Ordinary suite with both real codecs | PASS: 14 files, 1526 top-level assertions |
+| Ordinary suite with both real codecs | PASS: 14 files, 1528 top-level assertions |
 | Actual CW/RTTY integration | PASS: symbols, mode-specific endings, WAV generation/reception, native Result uncertainty and CLI |
 | Production statement coverage | 99.39% (95% minimum) |
 | Production branch coverage | 91.48% (90% minimum) |
-| Ordinary and author gates | PASS: 23 files, 1990 top-level assertions; critic, pinned formatter, POD, executable documentation, metadata, CPANTS, licensing and website |
+| Ordinary and author gates | PASS: 23 files, 2001 top-level assertions; critic, pinned formatter, POD, executable documentation, metadata, CPANTS, licensing and website |
 | Release archive | PASS: distribution tests and archive metadata/quality checks |
 | Isolated installation | PASS: installed library, CLI, station-log example and official ADX schema validation |
 | Workflow configuration | PASS: actionlint syntax/expression/shell checks |
@@ -56,6 +56,8 @@ The quality pass adds exact decimal/string clock tests, malformed nested XML,
 extension metadata conflicts, bounded chunk reads, invalid Unicode, working-directory
 changes and deterministic exports across randomized Perl hash seeds. All three
 historical Kosovo region periods are retained instead of overwriting older rows.
+The portability follow-up also checks older optional XML versions, child programs
+without shell quoting, and clean process shutdown with both native schema caches.
 
 The table above records local checks; it does not stand in for the configured
 Linux, Windows, FreeBSD, Solaris, Cygwin or other Perl-version jobs. See the

@@ -13,6 +13,9 @@ our $VERSION = '0.001';
 my $registry         = Ham::QSO::_Internal::ADIFData::registry();
 my $schema_directory = File::Spec->catdir(File::Spec->rel2abs(dirname(__FILE__)), '_Internal');
 my %schemas;
+
+# Release native schema objects while LibXML's runtime is still intact.
+END { %schemas = () }
 my %indicators = (
     B => 'Boolean',
     N => 'Number',
