@@ -37,9 +37,13 @@ jobs:
         with:
           perl-version: ${{ matrix.perl }}
           distribution: ${{ matrix.distribution || 'default' }}
+      - name: Verify the interpreter and bundled build tools
+        run: |
+          perl -V
+          perl -MExtUtils::MakeMaker -MPod::Man -e 'print "MakeMaker $ExtUtils::MakeMaker::VERSION; Pod::Man $Pod::Man::VERSION\n"'
       - name: Install build prerequisites
         run: |
-          cpanm --notest --skip-satisfied 'ExtUtils::MakeMaker~7.22' 'Storable~3.41' 'Digest::SHA~5.96'
+          cpanm --verbose --notest --skip-satisfied 'ExtUtils::MakeMaker~7.22' 'Storable~3.41' 'Digest::SHA~5.96'
           cpanm --notest --installdeps .
           perl -MExtUtils::MakeMaker=7.22 -MStorable=3.41 -MDigest::SHA=5.96 -MEncode=3.12 -MCwd=3.65 -e 'print "Native dependencies load correctly\n"'
       - name: Configure and test
@@ -52,6 +56,14 @@ jobs:
           perl -Ilib examples/run-all.pl
       - name: Installed command and launcher
         run: perl maint/check-cli-install.pl "cli-install tools" --build
+      - name: Preserve dependency build diagnostics on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-diagnostics-${{ matrix.os }}-${{ matrix.perl }}
+          path: ~/.cpanm/work/*/build.log
+          if-no-files-found: ignore
+          retention-days: 7
   integration:
     name: Actual CW and RTTY codecs
     runs-on: ubuntu-latest
