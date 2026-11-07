@@ -1068,8 +1068,10 @@ Direction is export (default, ADIF 3.1.8) or import (generic 3.0.2..3.1.8).
 Returns 1 or throws. Requires optional XML::Parser 2.59+ and XML::LibXML 2.0213+.
 The official schemas document limitations; passing XSD alone is not a claim of
 exhaustive field semantics. No network access or external entity loading occurs.
-Schemas are resolved relative to the installed module at load time and compiled
-once per direction. Changing the application's working directory is safe.
+Schemas are resolved relative to the installed module at load time. Changing the
+application's working directory is safe. On Windows, each call owns its validator
+and releases the document first, including on failure. Other platforms reuse
+compiled schemas by direction and release them before interpreter teardown.
 
 =head1 ERRORS
 

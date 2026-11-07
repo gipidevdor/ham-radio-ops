@@ -2,9 +2,9 @@
 
 [Overview](../README.md) · [Standards](standards.md) · [Current checks](quality-results.json) · [Earlier logbook record](logbook-results.json) · [Earlier core record](current-results.json)
 
-The [CI and dependency-audit snapshot](ci-results.json) records the pre-repair
-remote baseline separately from the local measurements below. Workflow links
-at the end of this page show subsequent runs. The Windows matrix uses
+The [CI and dependency-audit snapshot](ci-results.json) records the remote baseline
+and subsequent repair checks separately from the local measurements below.
+Workflow links at the end of this page show subsequent runs. The Windows matrix uses
 Strawberry Perl with a matching native toolchain and verifies native dependency
 loading before running tests. Unresolved upstream dependency advisories remain
 visible in the [dependency review](dependency-audit.md#observed-dependency-audit).
@@ -18,7 +18,7 @@ editions; they do not certify all Italian or international radio-law obligations
 | Ordinary suite with both real codecs | PASS: 14 files, 1528 top-level assertions |
 | Actual CW/RTTY integration | PASS: symbols, mode-specific endings, WAV generation/reception, native Result uncertainty and CLI |
 | Production statement coverage | 99.39% (95% minimum) |
-| Production branch coverage | 91.48% (90% minimum) |
+| Production branch coverage | 91.31% (90% minimum) |
 | Ordinary and author gates | PASS: 23 files, 2001 top-level assertions; critic, pinned formatter, POD, executable documentation, metadata, CPANTS, licensing and website |
 | Release archive | PASS: distribution tests and archive metadata/quality checks |
 | Isolated installation | PASS: installed library, CLI, station-log example and official ADX schema validation |
@@ -57,7 +57,7 @@ extension metadata conflicts, bounded chunk reads, invalid Unicode, working-dire
 changes and deterministic exports across randomized Perl hash seeds. All three
 historical Kosovo region periods are retained instead of overwriting older rows.
 The portability follow-up also checks older optional XML versions, child programs
-without shell quoting, and clean process shutdown with both native schema caches.
+without shell quoting, and clean process shutdown with both official schema directions.
 
 The table above records local checks; it does not stand in for the configured
 Linux, Windows, FreeBSD, Solaris, Cygwin or other Perl-version jobs. See the

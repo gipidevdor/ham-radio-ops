@@ -22,6 +22,8 @@ archive with the corrected implementation using the identical benchmark script
 and input hashes. Runs were sequential with no concurrent tests or coverage.
 Each median includes repeated calls; the first ADX schema compilation is retained
 in the samples. Batch import includes exclusive file creation and a durable commit.
+The record identifies the measured source snapshot independently from the later
+Windows lifetime correction and portability checks.
 
 | Workload (1024 synthetic contacts) | Before | After | Ratio |
 | --- | ---: | ---: | ---: |

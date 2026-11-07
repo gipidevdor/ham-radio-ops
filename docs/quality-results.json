@@ -272,31 +272,48 @@
       }
     ],
     "interpreter_binary_sha256": "35a323324c34cad83f30a442fe05e1a29b71e59f98b1237739477704ac0f4085",
+    "production_module_sha256": {
+      "lib/Ham/QSO.pm": "d7a3992916433140f95ee261ae3aed81681969a7b366b5762cc66f68d3409df5",
+      "lib/Ham/QSO/ADIF.pm": "aab248494c71832c1f434909c5d5bf68ae134d631ee6b48206357a6abd3dce57",
+      "lib/Ham/QSO/Adapter.pm": "293ee9128b21f5a0a9d75907c9f9ec1a3783f26c0f6ae8f43c12079b7f45c55d",
+      "lib/Ham/QSO/Error.pm": "4d52d49e2dfa7921a620db3279aeddce697e89bb0ca1cd0346d34e8680e97094",
+      "lib/Ham/QSO/Logbook.pm": "f26ae4d06343c6a522d958014292ffa7fa32c52ac684ae0cf6401e4e1dd11e97",
+      "lib/Ham/QSO/Message.pm": "83ec00a562fdc77794015c103d4cd60441870a2114fadce4bcbfbe052c879fc6",
+      "lib/Ham/QSO/Profile.pm": "c8ec03567dbccf853de786e577cb21bd114979809044fff2e9bb1357c19e9877",
+      "lib/Ham/QSO/Result.pm": "0976ad9cd527678f38be73018463d46618638c9666d7ea9a64ccf096b733fa4b",
+      "lib/Ham/QSO/Session.pm": "a60cc51abf7bbc47f640095afbc95ec485d85bd07cb17474b72b44f8ec21b5a3",
+      "lib/Ham/QSO/_Internal/ADIFData.pm": "13f876d63847f091e92668fdc9015008b1d040b1df7750f064add3c70adfeb51",
+      "lib/Ham/QSO/_Internal/CLI.pm": "19c6ff50050ffa1fa99b8404f8aba4ec125ad45bf60c6bd4c4ff9428a3284f2b",
+      "lib/Ham/QSO/_Internal/Data.pm": "a1e4f678becafc4236c67a19da888ceb2d01d6f213a681f9ef42b46807fcf3e2",
+      "lib/Ham/QSO/_Internal/IO.pm": "b2be17a64543e09e501aa5ff7956dca9419dd2ee9a4e9bced4dddd6ef5d7e810",
+      "lib/Ham/QSO/_Internal/Validate.pm": "cb1ecdfa2980592f04a461be3b3980f966869eb6234e58141e802fdc20e3c37c"
+    },
     "scope": "Fresh sequential local runs after the schema-lifecycle fix, without concurrent tests or coverage; the extracted baseline uses the identical current benchmark script. Repeated-call medians include first schema compilation; no RSS or cross-platform timing claim. Import ratios include storage-dependent sync cost and vary with the filesystem environment.",
     "script": "maint/benchmark-logbook.pl",
-    "script_sha256": "054d4bbd42965f7440e6c73f257270b40e8357656426e94ed3d6d3099afd6c6c"
+    "script_sha256": "054d4bbd42965f7440e6c73f257270b40e8357656426e94ed3d6d3099afd6c6c",
+    "source_revision": "c11d74299cb88017eccc78668925483c1bdc27a4"
   },
   "checks": {
     "coverage": {
       "measured": {
         "branch": {
           "covered": 977,
-          "error": 91,
-          "percentage": 91.4794007490637,
-          "total": 1068,
+          "error": 93,
+          "percentage": 91.3084112149533,
+          "total": 1070,
           "uncoverable": 0
         },
         "statement": {
-          "covered": 1942,
+          "covered": 1945,
           "error": 12,
-          "percentage": 99.3858751279427,
-          "total": 1954
+          "percentage": 99.386816555953,
+          "total": 1957
         },
         "total": {
-          "covered": 2919,
-          "error": 103,
-          "percentage": 96.5916611515553,
-          "total": 3022,
+          "covered": 2922,
+          "error": 105,
+          "percentage": 96.5312190287413,
+          "total": 3027,
           "uncoverable": 0
         }
       },
@@ -304,7 +321,7 @@
       "minimum_statement_percentage": 95,
       "status": "PASS"
     },
-    "native_schema_shutdown": "PASS locally: both cached schema directions validated in an independent process with clean exit; remote platform outcomes are tracked in CI.",
+    "native_schema_shutdown": "PASS: local child process with both schema directions and completed Windows 5.42 full XML CI; exact remote revision and job outcomes are in docs/ci-results.json.",
     "official_schema_bytes_and_notices": "PASS; official schemas unmodified",
     "ordinary_and_author_suite": {
       "files": 23,
@@ -343,7 +360,7 @@
     "ambiguous application identities cannot overwrite source metadata",
     "bounded line scanning and invalid Unicode rejection before journal append",
     "all batch records preflighted before writing with one durability barrier",
-    "native XML schemas released before interpreter global destruction"
+    "documents released before validators; Windows validation owns its schema for one call"
   ],
   "limitations": [
     "Local macOS ARM64 / Perl 5.44 verification; remote platform results are tracked separately by source revision in CI.",
@@ -354,7 +371,7 @@
   "measured_on": "2026-11-07",
   "production_module_sha256": {
     "lib/Ham/QSO.pm": "d7a3992916433140f95ee261ae3aed81681969a7b366b5762cc66f68d3409df5",
-    "lib/Ham/QSO/ADIF.pm": "aab248494c71832c1f434909c5d5bf68ae134d631ee6b48206357a6abd3dce57",
+    "lib/Ham/QSO/ADIF.pm": "0159b62d69e04497f2b4a382881e405621f50a3d740ef96d263424535e557585",
     "lib/Ham/QSO/Adapter.pm": "293ee9128b21f5a0a9d75907c9f9ec1a3783f26c0f6ae8f43c12079b7f45c55d",
     "lib/Ham/QSO/Error.pm": "4d52d49e2dfa7921a620db3279aeddce697e89bb0ca1cd0346d34e8680e97094",
     "lib/Ham/QSO/Logbook.pm": "f26ae4d06343c6a522d958014292ffa7fa32c52ac684ae0cf6401e4e1dd11e97",
