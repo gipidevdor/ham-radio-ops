@@ -2,6 +2,13 @@
 
 [Overview](../README.md) · [Standards](standards.md) · [Current checks](quality-results.json) · [Earlier logbook record](logbook-results.json) · [Earlier core record](current-results.json)
 
+The [CI and dependency-audit snapshot](ci-results.json) records the pre-repair
+remote baseline separately from the local measurements below. Workflow links
+at the end of this page show subsequent runs. The Windows matrix uses
+Strawberry Perl with a matching native toolchain and verifies native dependency
+loading before running tests. Unresolved upstream dependency advisories remain
+visible in the [dependency review](dependency-audit.md#observed-dependency-audit).
+
 Local development verification on **2026-11-07**: macOS ARM64, Perl 5.44.0,
 Perl::Tidy 20260826. Results apply to the declared implementation and source
 editions; they do not certify all Italian or international radio-law obligations.
