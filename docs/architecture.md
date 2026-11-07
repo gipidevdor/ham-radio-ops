@@ -52,10 +52,19 @@ and therefore costs O(retained evidence); it is not an unlimited-duration stream
 
 feed/receive/transmitted validate all argument types, ranges, event ID conflicts,
 time ordering and bounds before mutation. Identical event replay is idempotent.
+The event ID index refers to retained observations directly; duplicate comparison
+serializes only replayed events, and peer selection uses the same index.
 finish is idempotent, does not close the QSO, and rejects further mutating work.
 reset retains configuration, clears observations and invalidates proposals.
 
 ## Files and native codecs
+
+The integrated [station log](logbook.md) persists explicit contact records and
+finished session evidence separately from working snapshots. Its append-only
+journal uses an attributed correction chain, SHA-256 linkage and externally
+preserved checkpoints. ADIF 3.1.8 ADI/ADX import/export is an interchange boundary;
+import never creates an observed TX/RX event. Storage retention, authenticated
+identity, qualified timestamps and legal conservation remain deployment concerns.
 
 Exclusive-create and explicit atomic-replacement helpers share the siblings'
 implementation. Caller-owned handles remain open. Overwrite preserves regular

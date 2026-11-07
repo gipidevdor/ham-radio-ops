@@ -24,6 +24,7 @@ docs/verification.md
 examples/codecs.pl
 examples/complete-it-cw.jsonl
 examples/messages.pl
+examples/logbook.pl
 examples/README.md
 examples/routes.json
 examples/run-all.pl
@@ -34,6 +35,20 @@ lib/Ham/QSO/_Internal/Data.pm
 lib/Ham/QSO/_Internal/IO.pm
 lib/Ham/QSO/_Internal/Validate.pm
 lib/Ham/QSO/Adapter.pm
+lib/Ham/QSO/ADIF.pm
+lib/Ham/QSO/Logbook.pm
+lib/Ham/QSO/_Internal/ADIFData.pm
+lib/Ham/QSO/_Internal/adx318.xsd
+lib/Ham/QSO/_Internal/adx318generic.xsd
+maint/update-adif-data.pl
+maint/benchmark-logbook.pl
+docs/adif-sources.json
+docs/logbook.md
+docs/logbook-results.json
+docs/quality-results.json
+t/12-adif.t
+t/13-logbook.t
+t/14-quality-boundaries.t
 lib/Ham/QSO/Error.pm
 lib/Ham/QSO/Message.pm
 lib/Ham/QSO/Profile.pm
@@ -71,6 +86,7 @@ t/10-cli-codecs.t
 t/11-acknowledgement-context.t
 t/lib/QSOTest.pm
 xt/critic.t
+xt/adif-sources.t
 xt/documentation.t
 xt/kwalitee.t
 xt/licenses.t

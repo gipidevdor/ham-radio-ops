@@ -69,6 +69,20 @@ are idempotent only when the complete normalised event matches. Different eviden
 with the same ID is rejected. Times are caller-selected integer milliseconds
 from one epoch, monotonic and nonoverlapping. EOF only finishes observation.
 
+## Archive a contact in the station log
+
+Finish the Session observation stream, then use `record_session` on the integrated
+logbook with the operator, a unique record ID, an explicit UTC origin for the
+event clock, and frequency/band metadata. The archived snapshot includes original
+events, diagnostics and uncertainty. Completion and contact closure remain
+separate facts; incomplete contacts are retained as incomplete.
+
+The [station-log guide](logbook.md#archive-an-observed-session) contains a complete
+independent example. Create the persistent file once; reopen it for subsequent
+contacts. `correct` appends a full replacement field set with a predecessor ID
+and reason. `export_adif` produces the current contact view; `records` retains the
+full original history. Preserve the journal and trusted checkpoints separately.
+
 ## Interpret the outcome
 
 `complete` concerns current identification/report/ack evidence. `terminated`

@@ -13,6 +13,8 @@ Sources reviewed on **2026-11-07**, with editions deliberately fixed:
 | [Italian Allegato 26](https://www.gazzettaufficiale.it/eli/id/2021/03/22/21A01607/sg) | D.M. 1 March 2021, article 12 | National exercise requirements; implemented check is paragraph 6 |
 | [MIMIT radioamateur notices](https://ispettorati.mise.gov.it/index.php/servizi/radioamatori/) | Reviewed 2026-11-07 | Current administrative context and limitations of callsign assumptions |
 | [D.M. 26 January 2026](https://www.gazzettaufficiale.it/eli/id/2026/03/03/26A00956/SG) | Class N / selected callsigns | Does not justify hard-coded assignment heuristics or authorisation claims |
+| [ADIF specification](https://adif.org.uk/318/ADIF_318.htm) | 3.1.8, 2026-10-12; types, fields, ADI and ADX | Amateur-radio data interchange; does not define legal conservation or database immutability |
+| [Official ADX schemas](https://adif.org.uk/318/ADIF_318_resources.htm#ADXSchemas) | 3.1.8.1, 2026-11-02 | Export and generic import schemas by Graham Smith, CC0 1.0; embedded limitations retained |
 
 M.1172 is scoped to the maritime mobile service and is not adopted wholesale as
 amateur-radio session law. KN is an amateur convention described by IARU, not a
@@ -37,6 +39,18 @@ are original implementation summaries, not reproduced standards text.
 | ENG-R002 | Architecture, Evidence boundary | t/04-evidence.t: corrected reports and peer identity invalidate dependent proof |
 
 ## Exact conformity boundary
+
+Station logging is a separate implementation contract, described in the
+[station-log guide](logbook.md). `t/12-adif.t` checks ADIF types, lengths, UTC
+dates, extensions, compatibility policies and independent official XSD validation.
+`t/13-logbook.t` checks append-only records, preserved evidence, attributed
+corrections, concurrent writers, damaged writes, rollback and externally anchored
+verification. `xt/adif-sources.t` checks the bundled schemas' exact reviewed bytes
+and embedded CC0 notices. These are engineering integrity/interchange checks,
+separate from the executable operating-rule inventory above.
+`t/14-quality-boundaries.t` independently exercises malformed container names,
+declaration identity, byte limits, exact decimal ranges, integer-clock rounding,
+historical region windows, UTF-8 journal validity and deterministic interchange.
 
 The library checks only its supported semantic forms, evidence relationships and
 supplied identification schedule. This is neither a full encoding certification

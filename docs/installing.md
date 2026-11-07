@@ -20,3 +20,9 @@ PERL5LIB="lib:../ham-cw/lib:../ham-rtty/lib" prove -lv t/07-codec-integration.t
 No absolute developer-machine paths are embedded in the repository. Windows uses
 `;` to separate PERL5LIB entries. Native codecs are loaded lazily. An unavailable
 selected codec raises QSO_E_DEPENDENCY; it never selects a different mode.
+
+The [station log and ADIF codec](logbook.md) use core Perl modules for the journal,
+ADI and ADX export. ADX import optionally requires XML::Parser 2.59+; validating
+against the bundled official schemas additionally requires XML::LibXML 2.0213+.
+These are separately installed dependencies, not bundled native libraries.
+The official CC0 schema files are installed with the library and need no network.

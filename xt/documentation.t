@@ -4,7 +4,8 @@ use Test::More;
 use File::Temp qw(tempdir);
 use File::Spec;
 use Cwd qw(getcwd);
-my $root = File::Spec->rel2abs('.');
+my $root            = File::Spec->rel2abs('.');
+my @snippet_library = map { '-I' . File::Spec->rel2abs($_) } grep { !ref($_) && length($_) } @INC;
 my @files =
     ('README.md', sort(glob('docs/*.md')), 'lib/Ham/QSO.pm', sort(glob('lib/Ham/QSO/*.pm')));
 my $temporary = tempdir(CLEANUP => 1);
@@ -37,7 +38,7 @@ for my $file (@files) {
         close $out            or die $!;
         my $cwd = getcwd();
         chdir $temporary or die $!;
-        system $^X, "-I$root/lib", '-Mwarnings=FATAL,all', $path;
+        system $^X, "-I$root/lib", @snippet_library, '-Mwarnings=FATAL,all', $path;
         my $status = $?;
         chdir $cwd or die $!;
         is($status, 0, "$file standalone Perl example");

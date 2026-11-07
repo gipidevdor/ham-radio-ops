@@ -1,7 +1,7 @@
 {
    "archname" : "darwin-thread-multi-2level",
    "input_sha256" : "a07b047d23ad5692b19169608599e185c58461ec68e178968ee2eebfa095be0e",
-   "iterations" : 1000,
+   "iterations" : 20000,
    "os" : "darwin",
    "perl" : "5.044000",
    "profile" : {
@@ -14,16 +14,16 @@
    },
    "results" : {
       "compose" : {
-         "mean_seconds" : 4.3773889541626e-05,
-         "wall_seconds" : 0.043773889541626
+         "mean_seconds" : 3.80290508270264e-05,
+         "wall_seconds" : 0.760581016540527
       },
       "new_session_and_rx" : {
-         "mean_seconds" : 0.000183842897415161,
-         "wall_seconds" : 0.183842897415161
+         "mean_seconds" : 0.00016611624956131,
+         "wall_seconds" : 3.3223249912262
       },
       "parse" : {
-         "mean_seconds" : 3.18648815155029e-05,
-         "wall_seconds" : 0.0318648815155029
+         "mean_seconds" : 2.63705611228943e-05,
+         "wall_seconds" : 0.527411222457886
       }
    },
    "rss" : "not measured",

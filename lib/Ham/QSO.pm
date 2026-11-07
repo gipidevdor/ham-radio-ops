@@ -14,18 +14,21 @@ sub new {
     my %args = named_arguments(@pairs);
     options(\%args, 'profile');
     my $profile = Ham::QSO::Profile->new(name => $args{profile} // 'it-cw');
-    return bless {profile => $profile}, $class;
+    return bless {
+        profile  => $profile,
+        messages => Ham::QSO::Message->new(profile => $profile->name)
+    }, $class;
 }
 sub profile { my ($self) = @_; return $self->{profile}->as_hash }
 
 sub parse {
     my ($self, $text) = @_;
-    return Ham::QSO::Message->new(profile => $self->{profile}->name)->parse($text);
+    return $self->{messages}->parse($text);
 }
 
 sub compose {
     my ($self, @pairs) = @_;
-    return Ham::QSO::Message->new(profile => $self->{profile}->name)->compose(@pairs);
+    return $self->{messages}->compose(@pairs);
 }
 
 sub session {
@@ -38,6 +41,18 @@ sub session {
 sub adapter {
     my ($self, @pairs) = @_;
     return Ham::QSO::Adapter->new(profile => $self->{profile}->name, @pairs);
+}
+
+sub logbook {
+    my ($self, @pairs) = @_;
+    require Ham::QSO::Logbook;
+    return Ham::QSO::Logbook->new(@pairs);
+}
+
+sub adif {
+    my ($self, @pairs) = @_;
+    require Ham::QSO::ADIF;
+    return Ham::QSO::ADIF->new(@pairs);
 }
 1;
 
@@ -108,6 +123,20 @@ and max_events. See L<Ham::QSO::Session> for timing, evidence and lifecycle rule
 
 Returns an Adapter with this profile. Loads only the selected optional codec.
 See L<Ham::QSO::Adapter>. Construction fails clearly if it is unavailable.
+
+=head2 logbook
+
+    my $log = $qso->logbook(path => 'station.jsonl', station => 'IU0ABC');
+
+Opens the integrated append-only station log. See L<Ham::QSO::Logbook> for
+exclusive creation, session archiving, corrections and trusted checkpoints.
+
+=head2 adif
+
+    my $adif = $qso->adif;
+
+Creates an independent L<Ham::QSO::ADIF> ADI/ADX interchange codec. Importing or
+exporting never records an on-air event. Accepts ADIF constructor resource bounds.
 
 =head1 ERRORS
 

@@ -38,10 +38,29 @@ sub number {
     return 0 + $value;
 }
 
+sub _integral_representation {
+    my ($value) = @_;
+    $value =~ s/\A\s+|\s+\z//gx;
+    my ($whole, $fraction, $exponent) =
+        $value =~ /\A[+-]?([0-9]*)(?:\.([0-9]*))?(?:[eE]([+-]?[0-9]+))?\z/x;
+    return 0 unless defined $whole;
+    $fraction //= '';
+    $exponent //= 0;
+    my $digits = $whole . $fraction;
+    return 1 unless $digits =~ /[1-9]/x;
+    my $places = length $fraction;
+    return 1 if $exponent >= $places;
+    my $discard = $places - $exponent;
+    return 0 if $discard > length $digits;
+    return substr($digits, -$discard) !~ /[1-9]/x;
+}
+
 sub integer {
     my ($name, $value, $min, $max) = @_;
     number($name, $value, $min, $max);
-    fail('QSO_E_ARGUMENT', "$name must be an integer") if int($value) != $value;
+    fail('QSO_E_ARGUMENT', "$name must be an integer")
+        if int($value) != $value
+        || ("$value" =~ /[.eE]/x && !_integral_representation("$value"));
     return 0 + $value;
 }
 

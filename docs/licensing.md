@@ -58,6 +58,16 @@ or right to use an organisation's logo or other branding is implied.
 
 ## Fixtures, media and generated pages
 
+The ADIF implementation also bundles the two official ADX 3.1.8 XML schemas by
+Graham Smith under their embedded **CC0 1.0 Universal** dedication. Their bytes
+and notices are unmodified; [ADIF provenance](adif-sources.json) records exact
+source URLs, versions and SHA-256 hashes. The original ADIF specification prose
+and official test-QSO files are not bundled. ADIF field/type/code identifiers are
+compiled as factual interoperability data in an original project representation.
+The implementation and original tests use Artistic License 2.0. Optional
+XML::Parser and XML::LibXML are separately installed under Perl's licensing
+terms; this package does not redistribute their native libraries or dependencies.
+
 The corpus JSON and full-session fixture are original synthetic examples under
 the project license. Runtime test WAVs are freshly generated in temporary
 locations; no received-radio recording from a sibling corpus is copied here.

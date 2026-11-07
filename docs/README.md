@@ -4,6 +4,7 @@
 
 - [Installation](installing.md)
 - [Task guide](usage.md)
+- [Station log and ADIF](logbook.md): persistent contacts, session archiving, corrections, interchange and integrity
 - [Diagnostics](diagnostics.md)
 - [Architecture](architecture.md)
 - [Licensing and copyright](licensing.md)

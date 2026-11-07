@@ -44,7 +44,8 @@ https://www.itu.int/en/Pages/copyright.aspx
 https://www.itu.int/rec/R-REC-M.1677/en
 They are linked as external standards, not redistributed or translated here.
 Italian official acts are likewise linked through their official sources.
-There are no bundled standards documents, third-party recordings, fonts,
+Except for the explicitly licensed ADX schemas below, there are no bundled
+standards documents, third-party recordings, fonts,
 logos or branding artwork. The site uses system fonts and the shared original
 project theme. Corpus transcripts are original synthetic examples; callsigns
 are illustrative and confer no assignment or permission.
@@ -63,3 +64,29 @@ docs/license-provenance.json and explained in docs/licensing.md.
 Attribution and descriptive source names do not imply endorsement or
 certification by the referenced authors, IARU, ITU, MIMIT or tool maintainers.
 No additional rights in external works or marks are granted by this notice.
+
+ADIF interchange and ADX schemas
+
+Ham::QSO::ADIF, Ham::QSO::Logbook, their tests and the factual field/type/code
+compilation are original project implementation under Artistic License 2.0.
+Reference specification: ADIF 3.1.8 (2026-10-12), ADIF Developers Group:
+https://adif.org.uk/318/ADIF_318.htm
+The specification's narrative text and official test-QSO files are not bundled.
+Field names, protocol identifiers and numeric constraints are used to implement
+interoperability; this does not relicense the specification as project prose.
+
+The two files lib/Ham/QSO/_Internal/adx318.xsd and adx318generic.xsd are
+unmodified official ADX schemas by Graham Smith, schema version 3.1.8.1,
+dated 2026-11-02. Each retains its original embedded CC0 1.0 Universal notice:
+https://adif.org.uk/318/adx318.xsd
+https://adif.org.uk/318/adx318generic.xsd
+https://creativecommons.org/publicdomain/zero/1.0/
+These schemas retain their CC0 dedication and are not claimed as original
+Artistic-licensed project code. SHA-256 provenance is in docs/adif-sources.json.
+The shared .gitattributes settings are adapted to disable text normalization for
+these schemas, preserving their reviewed upstream bytes across Git checkouts.
+
+Optional XML::Parser 2.59 and XML::LibXML 2.0213 are separately installed under
+the same terms as Perl itself (Artistic License or GPL, per upstream notices).
+Their code, Expat/libxml2 libraries and build/runtime dependencies are not
+redistributed in this source package; their own notices remain controlling.

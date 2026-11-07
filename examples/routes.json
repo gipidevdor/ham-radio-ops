@@ -1,6 +1,10 @@
 {
   "examples": [
     {
+      "file": "logbook.pl",
+      "requires": []
+    },
+    {
       "file": "messages.pl",
       "requires": []
     },

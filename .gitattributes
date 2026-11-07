@@ -15,5 +15,7 @@ LICENSES/*.txt text eol=lf
 .editorconfig text eol=lf
 .perltidyrc text eol=lf
 .perlcriticrc text eol=lf
+# Preserve the reviewed upstream XML schema bytes, including original line endings.
+*.xsd -text
 *.wav binary
 *.mid binary

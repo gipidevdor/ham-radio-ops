@@ -59,6 +59,22 @@ $session->select_peer(callsign => 'F1ABC', evidence_id => 'e10');
 is($session->snapshot->as_hash->{peer}, 'F1ABC', 'explicit correction backed by actual text');
 ok(!$session->snapshot->complete && !$session->snapshot->facts->{sent_report},
     'correction clears dependent evidence');
+my $before_selection = $session->snapshot->as_hash;
+throws(
+    'QSO_E_SEQUENCE',
+    sub { $session->select_peer(callsign => 'DL1ABC', evidence_id => 'missing') },
+    'missing evidence after an operator record is rejected cleanly'
+);
+is_deeply($session->snapshot->as_hash, $before_selection, 'failed selection preserves history');
+my $selected = $session->select_peer(callsign => 'DL1ABC', evidence_id => 'e2')->as_hash;
+is($selected->{peer}, 'DL1ABC', 'peer can be selected again after an operator record');
+is_deeply(
+    [@{$selected->{history}}[0 .. $#{$before_selection->{history}}]],
+    $before_selection->{history},
+    'successful selection preserves earlier observations and operator records'
+);
+is_deeply(event($session, 10, 'rx', 'IU0ABC DE F1ABC RST 119 KN')->as_hash,
+    $selected, 'event replay remains idempotent after peer selection');
 my $copy = $session->snapshot->history;
 $copy->[0]{event}{text} = 'changed';
 isnt($session->snapshot->history->[0]{event}{text}, 'changed', 'history accessor copies');
