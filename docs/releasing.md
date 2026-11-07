@@ -13,7 +13,10 @@
 7. Inspect completed Linux/macOS/Windows CI and preserve their actual environment
    and source revision. Update verification data; do not infer unrun platform passes.
 8. Review Changes, public versions, API inventory, licensing and unassessed rules.
-9. Only after those gates, prepare the reviewed release/tag and publish explicitly.
+9. Review installed and declared dependency audit reports with the current
+   advisory database. Unresolved findings prevent a clean-security release claim;
+   preserve failures and exact dependency/interpreter build provenance.
+10. Only after those gates, prepare the reviewed release/tag and publish explicitly.
 
 ## Publish the documentation
 

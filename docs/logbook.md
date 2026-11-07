@@ -137,6 +137,11 @@ dates, duplicate fields and typed extensions. The official schemas' own document
 limitations remain relevant, including external datasets and historical details;
 this is not a claim that every award, contact or legal circumstance is certified.
 
+Windows validation keeps native schemas within one call and releases documents
+before their validators, including on failure. Other platforms reuse compiled
+schemas by direction and release them before interpreter shutdown. Performance
+measurements remain specific to their recorded platform and source snapshot.
+
 ## Integrity and legal boundary
 
 Journal format `ham-qso-logbook-1` uses canonical UTF-8 JSON, one envelope per LF

@@ -25,4 +25,16 @@ system $^X, "-I$root/lib", "$root/examples/run-all.pl";
 my $status = $?;
 chdir $cwd or die $!;
 is($status, 0, 'independent examples from an empty working directory');
+
+my $older_xml = tempdir(CLEANUP => 1);
+mkdir "$older_xml/XML" or die $!;
+for my $module (['Parser', '2.58'], ['LibXML', '2.0212']) {
+    open my $output, '>', "$older_xml/XML/$module->[0].pm" or die $!;
+    print {$output} "package XML::$module->[0]; our \$VERSION = '$module->[1]'; 1;\n" or die $!;
+    close $output                                                                     or die $!;
+}
+is(system($^X, "-I$older_xml", '-MXML::Parser', '-MXML::LibXML', '-e1'),
+    0, 'older optional XML fixtures load successfully');
+system $^X, "-I$root/lib", "-I$older_xml", "$root/examples/logbook.pl";
+is($?, 0, 'station-log example remains usable with older optional XML libraries installed');
 done_testing;

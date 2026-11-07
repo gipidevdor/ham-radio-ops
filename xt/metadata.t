@@ -54,6 +54,11 @@ for my $format (qw(json yml)) {
     ok(!exists($prereqs->{runtime}{requires}{PDL}),   "$path does not require the native backend");
     ok(!exists($prereqs->{runtime}{recommends}{PDL}), "$path does not recommend PDL");
     is($prereqs->{runtime}{requires}{perl}, '5.020', "$path declares minimum Perl");
+    my $runtime = CPAN::Meta::Requirements->from_string_hash($prereqs->{runtime}{requires});
+    ok(!$runtime->accepts_module('Cwd',    '3.64'), "$path rejects vulnerable PathTools releases");
+    ok($runtime->accepts_module('Cwd',     '3.65'), "$path accepts the patched PathTools minimum");
+    ok(!$runtime->accepts_module('Encode', '3.11'), "$path rejects vulnerable Encode releases");
+    ok($runtime->accepts_module('Encode',  '3.12'), "$path accepts the patched Encode minimum");
     is(
         $metadata->resources->{repository}{url},
         'https://github.com/gipidevdor/ham-radio-ops.git',

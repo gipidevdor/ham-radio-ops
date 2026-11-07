@@ -9,6 +9,7 @@ docs/architecture.md
 docs/benchmark-results.json
 docs/benchmarks.md
 docs/current-results.json
+docs/ci-results.json
 docs/dependency-audit.md
 docs/diagnostics.md
 docs/installing.md

@@ -76,7 +76,16 @@ my %operations = (
         return $log->import_adif(bytes => $source, id_prefix => 'import', operator => 'IU0ABC');
     }
 );
-if (eval { require XML::Parser; require XML::LibXML; 1 }) {
+if (
+    eval {
+        require XML::Parser;
+        XML::Parser->VERSION('2.59');
+        require XML::LibXML;
+        XML::LibXML->VERSION('2.0213');
+        1;
+    }
+    )
+{
     my $xml = $adif->encode(format => 'adx', records => [$fields[0]]);
     $operations{adx_validation} = sub { return $adif->validate_adx($xml) };
 }

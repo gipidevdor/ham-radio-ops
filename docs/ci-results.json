@@ -1,0 +1,434 @@
+{
+  "baseline": {
+    "dependency_audit": {
+      "database": "CPANSA::DB 20261101.010",
+      "reports": {
+        "declared": {
+          "distributions": {
+            "Encode": {
+              "advisories": [
+                "CPANSA-Encode-2021-01",
+                "CPANSA-Encode-2016-01",
+                "CPANSA-Encode-2011-2939"
+              ],
+              "version": null
+            },
+            "File-Temp": {
+              "advisories": [
+                "CPANSA-File-Temp-2011-4116"
+              ],
+              "version": null
+            },
+            "PathTools": {
+              "advisories": [
+                "CPANSA-PathTools-2016-02",
+                "CPANSA-PathTools-2016-01"
+              ],
+              "version": null
+            },
+            "perl": {
+              "advisories": [
+                "CPANSA-perl-2026-57432",
+                "CPANSA-perl-2023-47100",
+                "CPANSA-perl-2018-18314",
+                "CPANSA-perl-2017-12837",
+                "CPANSA-perl-2024-56406",
+                "CPANSA-perl-2016-6185",
+                "CPANSA-perl-2025-40909",
+                "CPANSA-perl-2015-8853",
+                "CPANSA-perl-2015-8608",
+                "CPANSA-perl-2018-6797",
+                "CPANSA-perl-2023-47038",
+                "CPANSA-perl-2018-18313",
+                "CPANSA-perl-2016-2381",
+                "CPANSA-perl-2018-18311",
+                "CPANSA-perl-2018-6798",
+                "CPANSA-perl-2018-6913",
+                "CPANSA-perl-2020-10878",
+                "CPANSA-perl-2026-15534",
+                "CPANSA-perl-2017-12883",
+                "CPANSA-perl-2022-48522",
+                "CPANSA-perl-2023-47039",
+                "CPANSA-ExtUtils-ParseXS-2016-1238",
+                "CPANSA-perl-2017-12814",
+                "CPANSA-perl-2020-12723",
+                "CPANSA-perl-2026-13221",
+                "CPANSA-perl-2026-19487",
+                "CPANSA-perl-2018-18312",
+                "CPANSA-perl-2026-8376",
+                "CPANSA-perl-2020-10543"
+              ],
+              "version": null
+            }
+          },
+          "errors": [],
+          "report_sha256": "8b3b76f06eec9b7f9afac74cdad170556d860579e069f58bb4e8f26fea8a91ff",
+          "total_advisories": 35
+        },
+        "installed": {
+          "distributions": {
+            "File-Temp": {
+              "advisories": [
+                "CPANSA-File-Temp-2011-4116"
+              ],
+              "version": "==0.2312"
+            },
+            "perl": {
+              "advisories": [
+                "CPANSA-perl-2026-15534"
+              ],
+              "version": "==5.044000"
+            }
+          },
+          "errors": [],
+          "report_sha256": "9cca4c8d0b0b26469cc1bbb2d501cd1b31d0fbf30996b2bb59adf15114bb984e",
+          "total_advisories": 2
+        }
+      },
+      "scanner": "CPAN::Audit 20261105.001"
+    },
+    "source_revision": "14ef9f7627985dd63ad984c35cd414fc5b0e0760",
+    "workflows": {
+      "documentation": {
+        "conclusion": "success",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "name": "Build and verify documentation",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981623/job/128449332606"
+          },
+          {
+            "conclusion": "success",
+            "name": "Publish GitHub Pages",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981623/job/128449697698"
+          }
+        ],
+        "run_id": 42387981623,
+        "source_revision": "14ef9f7627985dd63ad984c35cd414fc5b0e0760",
+        "status": "completed",
+        "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981623"
+      },
+      "security": {
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "name": "Secrets / complete Git history",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981616/job/128449333189"
+          },
+          {
+            "conclusion": "success",
+            "name": "Perl unsafe constructs",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981616/job/128449333266"
+          },
+          {
+            "conclusion": "failure",
+            "name": "CVEs / Perl and installed CPAN dependencies",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981616/job/128449333294"
+          },
+          {
+            "conclusion": "success",
+            "name": "Workflow security and syntax",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981616/job/128449333451"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Security checks",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981616/job/128450475978"
+          }
+        ],
+        "run_id": 42387981616,
+        "source_revision": "14ef9f7627985dd63ad984c35cd414fc5b0e0760",
+        "status": "completed",
+        "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981616"
+      },
+      "tests": {
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.40",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332449"
+          },
+          {
+            "conclusion": "success",
+            "name": "Actual CW and RTTY codecs",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332699"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.20",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332745"
+          },
+          {
+            "conclusion": "success",
+            "name": "Author checks and distribution",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332774"
+          },
+          {
+            "conclusion": "success",
+            "name": "macos-latest / Perl 5.40",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332778"
+          },
+          {
+            "conclusion": "failure",
+            "name": "windows-latest / Perl 5.40",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332785"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.44",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449332850"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.34",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594/job/128449333248"
+          }
+        ],
+        "run_id": 42387981594,
+        "source_revision": "14ef9f7627985dd63ad984c35cd414fc5b0e0760",
+        "status": "completed",
+        "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42387981594"
+      }
+    }
+  },
+  "observed_on": "2026-11-07",
+  "post_repair": {
+    "dependency_audit": {
+      "declared": {
+        "distributions": {
+          "File-Temp": {
+            "advisories": [
+              "CPANSA-File-Temp-2011-4116"
+            ],
+            "version": null
+          },
+          "perl": {
+            "advisories": [
+              "CPANSA-perl-2023-47038",
+              "CPANSA-perl-2018-6797",
+              "CPANSA-perl-2018-6798",
+              "CPANSA-perl-2020-10878",
+              "CPANSA-perl-2018-18311",
+              "CPANSA-perl-2016-2381",
+              "CPANSA-perl-2026-15534",
+              "CPANSA-perl-2015-8853",
+              "CPANSA-perl-2025-40909",
+              "CPANSA-perl-2018-18314",
+              "CPANSA-perl-2026-57432",
+              "CPANSA-perl-2020-12723",
+              "CPANSA-perl-2017-12814",
+              "CPANSA-perl-2026-13221",
+              "CPANSA-ExtUtils-ParseXS-2016-1238",
+              "CPANSA-perl-2016-6185",
+              "CPANSA-perl-2024-56406",
+              "CPANSA-perl-2015-8608",
+              "CPANSA-perl-2022-48522",
+              "CPANSA-perl-2023-47100",
+              "CPANSA-perl-2026-8376",
+              "CPANSA-perl-2017-12837",
+              "CPANSA-perl-2026-19487",
+              "CPANSA-perl-2023-47039",
+              "CPANSA-perl-2018-18313",
+              "CPANSA-perl-2018-18312",
+              "CPANSA-perl-2020-10543",
+              "CPANSA-perl-2018-6913",
+              "CPANSA-perl-2017-12883"
+            ],
+            "version": null
+          }
+        },
+        "errors": [],
+        "report_sha256": "ba24c698ab953c2f135e483c7ad83cec342bb7aba33b2c496ac8d15b29ccf0a2",
+        "scanner": {
+          "db": "20261101.010",
+          "version": "20261105.001"
+        },
+        "total_advisories": 30
+      },
+      "installed": {
+        "distributions": {
+          "File-Temp": {
+            "advisories": [
+              "CPANSA-File-Temp-2011-4116"
+            ],
+            "version": "==0.2312"
+          },
+          "perl": {
+            "advisories": [
+              "CPANSA-perl-2026-15534"
+            ],
+            "version": "==5.044000"
+          }
+        },
+        "errors": [],
+        "report_sha256": "9cca4c8d0b0b26469cc1bbb2d501cd1b31d0fbf30996b2bb59adf15114bb984e",
+        "scanner": {
+          "db": "20261101.010",
+          "version": "20261105.001"
+        },
+        "total_advisories": 2
+      }
+    },
+    "scope": "Completed remote runtime, packaging, documentation and dependency checks after the Windows validator lifetime correction. Later documentation/source hashes are recorded separately.",
+    "source_revision": "17c0fced02b95f837c220c9f870eee72c6bd2bef",
+    "workflows": {
+      "documentation": {
+        "conclusion": "success",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "name": "Build and verify documentation",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672567/job/128463343659"
+          },
+          {
+            "conclusion": "skipped",
+            "name": "Publish GitHub Pages",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672567/job/128463476872"
+          }
+        ],
+        "run_id": 42392672567,
+        "source_revision": "17c0fced02b95f837c220c9f870eee72c6bd2bef",
+        "status": "completed",
+        "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672567"
+      },
+      "security": {
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "conclusion": "failure",
+            "name": "CVEs / Perl and installed CPAN dependencies",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672570/job/128463343653"
+          },
+          {
+            "conclusion": "success",
+            "name": "Perl unsafe constructs",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672570/job/128463343850"
+          },
+          {
+            "conclusion": "success",
+            "name": "Secrets / complete Git history",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672570/job/128463343875"
+          },
+          {
+            "conclusion": "success",
+            "name": "Workflow security and syntax",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672570/job/128463343909"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Security checks",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672570/job/128463900749"
+          }
+        ],
+        "run_id": 42392672570,
+        "source_revision": "17c0fced02b95f837c220c9f870eee72c6bd2bef",
+        "status": "completed",
+        "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672570"
+      },
+      "tests": {
+        "conclusion": "success",
+        "jobs": [
+          {
+            "conclusion": "success",
+            "name": "Author checks and distribution",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463343929"
+          },
+          {
+            "conclusion": "success",
+            "name": "windows-latest / Perl 5.40",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344138"
+          },
+          {
+            "conclusion": "success",
+            "name": "Actual CW and RTTY codecs",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344169"
+          },
+          {
+            "conclusion": "success",
+            "name": "macos-latest / Perl 5.40",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344191"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.40",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344192"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.34",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344244"
+          },
+          {
+            "conclusion": "success",
+            "name": "windows-latest / Perl 5.42",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344270"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.44",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344297"
+          },
+          {
+            "conclusion": "success",
+            "name": "ubuntu-latest / Perl 5.20",
+            "status": "completed",
+            "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619/job/128463344319"
+          }
+        ],
+        "run_id": 42392672619,
+        "source_revision": "17c0fced02b95f837c220c9f870eee72c6bd2bef",
+        "status": "completed",
+        "url": "https://github.com/gipidevdor/ham-radio-ops/actions/runs/42392672619"
+      }
+    }
+  },
+  "schema_version": 1,
+  "scope": "Dated remote baseline plus a local repeat of declared constraints. This is not a clean-security attestation.",
+  "tightened_constraints": {
+    "errors": [],
+    "remaining_advisories": 30,
+    "remaining_distributions": [
+      "File-Temp",
+      "perl"
+    ],
+    "report_sha256": "b6b7c3c01840925281fe4aa84a6bd4a247a89e954493ff37a4b03d463f953b2d",
+    "runtime_minimums": {
+      "Cwd": "3.65",
+      "Encode": "3.12"
+    },
+    "scope": "Local declared-range repeat with the same advisory database; no installed-runtime re-audit or advisory suppression.",
+    "source_revision": "7580d3642a3ebb909fca64fcd9987b516b30c0ac"
+  }
+}

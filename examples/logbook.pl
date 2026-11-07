@@ -44,8 +44,19 @@ croak 'Export failed to select correction' unless $decoded->{records}[0]{FREQ} e
 print $adi;
 my $adx = $log->export_adif(format => 'adx');
 
-if (eval { require XML::Parser; require XML::LibXML; 1 }) {
+if (
+    eval {
+        require XML::Parser;
+        XML::Parser->VERSION('2.59');
+        require XML::LibXML;
+        XML::LibXML->VERSION('2.0213');
+        1;
+    }
+    )
+{
     $qso->adif->validate_adx($adx);
     print "Official ADX schema validation PASS\n";
 }
-else { print "SKIP optional ADX schema validation (XML libraries unavailable)\n" }
+else {
+    print "SKIP optional ADX schema validation (requires XML::Parser 2.59+, XML::LibXML 2.0213+)\n";
+}

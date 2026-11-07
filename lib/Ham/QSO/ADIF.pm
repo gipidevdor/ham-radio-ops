@@ -13,6 +13,9 @@ our $VERSION = '0.001';
 my $registry         = Ham::QSO::_Internal::ADIFData::registry();
 my $schema_directory = File::Spec->catdir(File::Spec->rel2abs(dirname(__FILE__)), '_Internal');
 my %schemas;
+
+# Release native schema objects while LibXML's runtime is still intact.
+END { %schemas = () }
 my %indicators = (
     B => 'Boolean',
     N => 'Number',
@@ -812,19 +815,29 @@ sub validate_adx {
         if !$available || $XML::LibXML::VERSION < 2.0213;
     my $path = File::Spec->catfile($schema_directory,
         $direction eq 'export' ? 'adx318.xsd' : 'adx318generic.xsd');
+    my ($document, $schema);
     my $valid = eval {
-        my $parser   = XML::LibXML->new(no_network => 1, load_ext_dtd => 0, expand_entities => 0);
-        my $document = $parser->load_xml(string => $bytes);
+        my $parser = XML::LibXML->new(no_network => 1, load_ext_dtd => 0, expand_entities => 0);
+        $document = $parser->load_xml(string => $bytes);
         for my $element ($document->findnodes('//*')) {
             $element->setNamespace('', '', 1);
             for my $attribute ($element->attributes) {
                 $attribute->setNamespace('', '', 1) if $attribute->nodeType == 2;
             }
         }
-        my $schema = $schemas{$direction} //= XML::LibXML::Schema->new(location => $path);
+
+        # Windows native validators must not survive into interpreter teardown.
+        $schema =
+            $^O eq 'MSWin32'
+            ? XML::LibXML::Schema->new(location => $path)
+            : ($schemas{$direction} //= XML::LibXML::Schema->new(location => $path));
         $schema->validate($document);
         1;
     };
+
+    # Keep the validator alive until its document has been released, on errors too.
+    undef $document;
+    undef $schema;
     _bad('ADX does not satisfy the official ADIF XML schema') unless $valid;
     return 1;
 }
@@ -1055,8 +1068,10 @@ Direction is export (default, ADIF 3.1.8) or import (generic 3.0.2..3.1.8).
 Returns 1 or throws. Requires optional XML::Parser 2.59+ and XML::LibXML 2.0213+.
 The official schemas document limitations; passing XSD alone is not a claim of
 exhaustive field semantics. No network access or external entity loading occurs.
-Schemas are resolved relative to the installed module at load time and compiled
-once per direction. Changing the application's working directory is safe.
+Schemas are resolved relative to the installed module at load time. Changing the
+application's working directory is safe. On Windows, each call owns its validator
+and releases the document first, including on failure. Other platforms reuse
+compiled schemas by direction and release them before interpreter teardown.
 
 =head1 ERRORS
 

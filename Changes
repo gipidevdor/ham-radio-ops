@@ -1,6 +1,11 @@
 Revision history for Ham-QSO
 
 0.001  2026-11-07
+    - Release native XML documents before validators and prevent Windows shutdown crashes.
+    - Check optional XML versions in examples/tests and avoid shell quoting of child programs.
+    - Record dated CI/audit evidence, patched dependency minimums and remaining upstream findings.
+    - Require patched Encode/PathTools releases and install all runtime prerequisites in CI.
+    - Use coherent Strawberry Perl and fail-fast native commands for Windows CI.
     - Keep optional dependency paths available in temporary-directory documentation checks.
     - Expand station-log documentation, executable archiving examples and Pages publication guidance.
     - Reject malformed nested ADX, ambiguous application metadata and invalid typed exports.
