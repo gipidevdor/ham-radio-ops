@@ -1,6 +1,7 @@
 Revision history for Ham-QSO
 
 0.001  2026-11-07
+    - Require patched Encode/PathTools releases and install all runtime prerequisites in CI.
     - Use a coherent Strawberry Perl toolchain and fail-fast shell for Windows CI.
     - Keep optional dependency paths available in temporary-directory documentation checks.
     - Expand station-log documentation, executable archiving examples and Pages publication guidance.

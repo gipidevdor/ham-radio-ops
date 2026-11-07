@@ -39,8 +39,9 @@ jobs:
           distribution: ${{ matrix.distribution || 'default' }}
       - name: Install build prerequisites
         run: |
-          cpanm --notest ExtUtils::MakeMaker 'Storable~3.41' 'Digest::SHA~5.96'
-          perl -MStorable=3.41 -MDigest::SHA=5.96 -e 'print "Native dependencies load correctly\n"'
+          cpanm --notest --skip-satisfied 'ExtUtils::MakeMaker~7.22' 'Storable~3.41' 'Digest::SHA~5.96'
+          cpanm --notest --installdeps .
+          perl -MExtUtils::MakeMaker=7.22 -MStorable=3.41 -MDigest::SHA=5.96 -MEncode=3.12 -MCwd=3.65 -e 'print "Native dependencies load correctly\n"'
       - name: Configure and test
         env:
           HARNESS_PERL_SWITCHES: -Mwarnings=FATAL,all
