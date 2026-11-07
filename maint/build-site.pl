@@ -282,12 +282,12 @@ sub page_html {
     my ($page, $body, $contents, $site) = @_;
     my ($pages, $version, $revision) = @{$site}{qw(pages version revision)};
     my $title      = escape_html($page->{title});
-    my $home       = escape_html(relative_url('index.html',      $page->{target}));
-    my $css        = escape_html(relative_url('assets/site.css', $page->{target}));
-    my $api        = escape_html(relative_url('api/index.html',  $page->{target}));
-    my $guides     = escape_html(relative_url('docs/index.html', $page->{target}));
-    my $license    = escape_html(relative_url('license.html',    $page->{target}));
-    my $recordings = escape_html(relative_url('notice.html',     $page->{target}));
+    my $home       = escape_html(relative_url('index.html',          $page->{target}));
+    my $css        = escape_html(relative_url('assets/site.css',     $page->{target}));
+    my $api        = escape_html(relative_url('api/index.html',      $page->{target}));
+    my $guides     = escape_html(relative_url('docs/index.html',     $page->{target}));
+    my $license    = escape_html(relative_url('license.html',        $page->{target}));
+    my $credits    = escape_html(relative_url('docs/licensing.html', $page->{target}));
     my $nav        = navigation($pages, $page->{target});
     my $source     = $page->{source} eq '@api' ? 'maint/build-site.pl' : $page->{source};
     my $source_url = escape_html("$REPOSITORY/blob/$revision/$source");
@@ -309,7 +309,7 @@ sub page_html {
 <nav aria-label="Documentation">$nav</nav></details>
 <main id="content"><div class="eyebrow">$label</div><article>$body</article>
 <footer><div>Ham::QSO $version · Built with Perl · <a href="$source_url">Page source</a></div>
-<div><a href="$license">Code and documentation: Artistic 2.0</a> · <a href="$recordings">Sources and credits</a></div></footer>
+<div><a href="$license">Project material: Artistic 2.0</a> · <a href="$credits">Sources and credits</a></div></footer>
 </main></div></body></html>
 HTML
 }

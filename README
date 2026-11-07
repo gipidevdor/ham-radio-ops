@@ -96,4 +96,5 @@ measured local results from configured CI and remaining release work.
 
 Copyright © 2026 Giacomo Picchiarelli. Code and original material use
 [Artistic License 2.0](LICENSE). External standards retain their own terms;
-see [NOTICE](NOTICE). No standards text or third-party recordings are bundled.
+see [NOTICE](NOTICE) and [licensing and copyright](docs/licensing.md).
+No standards text or third-party recordings are bundled.

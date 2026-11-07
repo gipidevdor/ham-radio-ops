@@ -1,20 +1,65 @@
-Ham::QSO / ham-radio-ops
+Licensing and provenance of Ham::QSO / ham-radio-ops
+
 Copyright (c) 2026 Giacomo Picchiarelli.
 
-Code and original documentation: Artistic License 2.0 (LICENSE).
+Project code, original documentation and original synthetic fixtures use
+Artistic License 2.0. The complete, unchanged license is in LICENSE. The
+copyright of The Perl Foundation in that file applies to the license text
+itself and does not replace the project copyright above.
 
-The project follows the author's ham-cw and ham-rtty repository conventions.
-Data validation, structured Error, file handling, formatter/critic settings,
-documentation site builder/style, archive and coverage/release checks are adapted
-from Ham::CW by the same author under Artistic License 2.0. Their QSO adaptations
-and all semantic/session implementation are in this distribution.
+Material reused from the author's Ham::CW project
 
-Referenced standards and legislation are external sources, not bundled code.
-IARU EOP fourth edition v4.2.0 is copyright IARU Region 1, 2026, CC BY-SA 4.0.
-No copy or translation of that publication is included. ITU recommendations and
-Italian official publications retain their own terms. Source links, sections and
-original implementation summaries are in docs/standards.md and Profile.pm.
+Source: https://github.com/gipidevdor/ham-cw
+Reference revision: 89a575951778181512c082e74e42939a24878d0b
+Copyright (c) 2026 Giacomo Picchiarelli. Artistic License 2.0.
+Upstream license:
+https://github.com/gipidevdor/ham-cw/blob/89a575951778181512c082e74e42939a24878d0b/LICENSE
 
-All corpus transcripts and generated test signals here are original synthetic
-examples under Artistic License 2.0. Callsigns in fixtures are illustrative and
-confer no assignment or permission. No third-party recordings are distributed.
+Protected file handling, plain-data/argument validation, structured Error,
+formatter/critic settings, distribution and author checks, documentation-site
+renderer/CSS and CI configuration reuse or adapt that project. Adaptations
+change namespaces and commands to Ham::QSO/ham-qso, add QSO-specific contracts
+and source/rights documentation, remove unused signal-processing helpers and
+adapt build/release/CI paths. The semantic/session engine is implemented here.
+The original Ham::CW copyright/theme notice in maint/site.css is retained.
+File-level reference paths, reference hashes and verbatim/adapted distinctions
+are recorded in docs/license-provenance.json. Adapted files are not represented
+as the unmodified Ham::CW distribution. Ham::RTTY is also an operating/API and
+project-style reference and an optional, separately installed codec.
+
+External publications
+
+Ethics and Operating Procedures for the Radio Amateur, fourth edition,
+v4.2.0 (2026), is copyright IARU Region 1 and licensed CC BY-SA 4.0:
+https://www.iaru-r1.org/on-the-air/eop/
+https://creativecommons.org/licenses/by-sa/4.0/legalcode.en
+Its publication text, translations, figures, tables and example transcripts
+are not bundled. Bibliographic references and original implementation-rule
+descriptions do not purport to relicense that publication under Artistic 2.0.
+Any later reuse of protected expression must observe its own licence,
+including applicable attribution, change notices and ShareAlike requirements.
+
+ITU recommendations retain their own copyright and publication terms:
+https://www.itu.int/en/Pages/copyright.aspx
+https://www.itu.int/rec/R-REC-M.1677/en
+They are linked as external standards, not redistributed or translated here.
+Italian official acts are likewise linked through their official sources.
+There are no bundled standards documents, third-party recordings, fonts,
+logos or branding artwork. The site uses system fonts and the shared original
+project theme. Corpus transcripts are original synthetic examples; callsigns
+are illustrative and confer no assignment or permission.
+
+Separately invoked software
+
+Ham::CW/Ham::RTTY, Perl/CPAN packages, GitHub Actions, cpanminus, Gitleaks,
+actionlint, zizmor, VM images and OS packages retain their own licences.
+Their implementations and downloaded dependencies are not bundled in the
+Ham::QSO source distribution. In particular, invoking a GPL-licensed CI tool
+does not represent relicensing that tool under Artistic 2.0. Redistribution
+of any such component would require its own rights and dependency review.
+Pinned CI-tool references and upstream licence links are recorded in
+docs/license-provenance.json and explained in docs/licensing.md.
+
+Attribution and descriptive source names do not imply endorsement or
+certification by the referenced authors, IARU, ITU, MIMIT or tool maintainers.
+No additional rights in external works or marks are granted by this notice.

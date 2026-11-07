@@ -13,6 +13,8 @@ docs/dependency-audit.md
 docs/diagnostics.md
 docs/installing.md
 docs/italy.md
+docs/license-provenance.json
+docs/licensing.md
 docs/README.md
 docs/releasing.md
 docs/security-ci.md
@@ -69,6 +71,7 @@ t/lib/QSOTest.pm
 xt/critic.t
 xt/documentation.t
 xt/kwalitee.t
+xt/licenses.t
 xt/metadata.t
 xt/pod.t
 xt/site.t

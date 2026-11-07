@@ -6,6 +6,7 @@
 - [Task guide](usage.md)
 - [Diagnostics](diagnostics.md)
 - [Architecture](architecture.md)
+- [Licensing and copyright](licensing.md)
 - [Standards and provenance](standards.md)
 - [Operating from Italy](italy.md)
 - [Verification record](verification.md)

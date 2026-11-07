@@ -93,20 +93,20 @@ $tree->delete;
 like($example, qr{class="syn-variable"}, 'PPI identifies Perl variables for highlighting');
 like(
     $home,
-    qr{href="license.html">Code and documentation: Artistic 2.0</a>},
+    qr{href="license.html">Project material: Artistic 2.0</a>},
     'the project license is visible in the page footer'
 );
 like(
     $home,
-    qr{href="notice.html">Sources and credits</a>},
-    'recording attribution and separate licenses are visible in the page footer'
+    qr{href="docs/licensing.html">Sources and credits</a>},
+    'rights and source attribution are visible in the page footer'
 );
 like(
     $example,
     qr{download="download" href="messages.pl"|href="messages.pl" download="download"},
     'runnable examples provide the original source download'
 );
-ok(-f "$site/corpus/semantic.json",      'licensed corpus audio is available');
+ok(-f "$site/corpus/semantic.json",      'original synthetic corpus is available');
 ok(-f "$site/docs/current-results.json", 'raw measurement evidence is available');
 ok(
     -f "$site/license.html" && -f "$site/notice.html",
