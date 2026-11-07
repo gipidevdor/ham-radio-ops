@@ -815,19 +815,29 @@ sub validate_adx {
         if !$available || $XML::LibXML::VERSION < 2.0213;
     my $path = File::Spec->catfile($schema_directory,
         $direction eq 'export' ? 'adx318.xsd' : 'adx318generic.xsd');
+    my ($document, $schema);
     my $valid = eval {
-        my $parser   = XML::LibXML->new(no_network => 1, load_ext_dtd => 0, expand_entities => 0);
-        my $document = $parser->load_xml(string => $bytes);
+        my $parser = XML::LibXML->new(no_network => 1, load_ext_dtd => 0, expand_entities => 0);
+        $document = $parser->load_xml(string => $bytes);
         for my $element ($document->findnodes('//*')) {
             $element->setNamespace('', '', 1);
             for my $attribute ($element->attributes) {
                 $attribute->setNamespace('', '', 1) if $attribute->nodeType == 2;
             }
         }
-        my $schema = $schemas{$direction} //= XML::LibXML::Schema->new(location => $path);
+
+        # Windows native validators must not survive into interpreter teardown.
+        $schema =
+            $^O eq 'MSWin32'
+            ? XML::LibXML::Schema->new(location => $path)
+            : ($schemas{$direction} //= XML::LibXML::Schema->new(location => $path));
         $schema->validate($document);
         1;
     };
+
+    # Keep the validator alive until its document has been released, on errors too.
+    undef $document;
+    undef $schema;
     _bad('ADX does not satisfy the official ADIF XML schema') unless $valid;
     return 1;
 }
