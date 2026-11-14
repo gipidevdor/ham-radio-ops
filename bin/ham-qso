@@ -28,8 +28,8 @@ See C<ham-qso help> for command options. Default profile is it-cw. Core commands
 require no codec or PDL. encode/decode/wav/receive load the selected optional
 Ham::CW or Ham::RTTY. All output goes to stdout unless --output is supplied;
 diagnostics go to stderr. Existing paths require explicit --overwrite. Inputs
-are bounded to 16 MiB and each message to 8192 characters. Replay takes one JSON
-object per line with the Session feed schema, or operator select_peer/abort records.
+are bounded to 16 MiB and each message to 8192 characters. Replay takes one UTF-8
+JSON object per line with the Session feed schema, or operator select_peer/abort records.
 No command operates a radio, microphone or playback device.
 
 =head1 EXIT STATUS

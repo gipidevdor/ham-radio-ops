@@ -237,4 +237,16 @@ close $closed or die $!;
         'closed output becomes structured error'
     );
 }
+SKIP: {
+    skip 'SIGPIPE unavailable', 1 unless exists $SIG{PIPE};
+    pipe my $reader, my $writer or skip 'Pipes unavailable', 1;
+    close $reader or die $!;
+    throws(
+        'QSO_E_IO',
+        sub { write_bytes($writer, 'buffered output') },
+        'a broken pipe fails before a buffered write can report success'
+    );
+    local $SIG{PIPE} = 'IGNORE';
+    close $writer;    ## no critic (InputOutput::RequireCheckedSyscalls)
+}
 done_testing;

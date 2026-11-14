@@ -68,6 +68,9 @@ for my $text (
     isnt($qso->parse($text)->status, 'supported', 'unsupported input is not overinterpreted');
 }
 is($qso->parse('CQ DE IU0ABC IU0XYZ K')->status, 'violation', 'conflicting repeated identity');
+my $self_addressed = $qso->parse('IU0ABC DE IU0ABC RST 579 KN');
+is($self_addressed->status, 'violation', 'a directed exchange requires two stations');
+ok(!defined $self_addressed->message, 'self-addressed text cannot supply exchange evidence');
 is($qso->parse('IU0ABC DE DL1ABC 73 KN')->message->{kind}, 'directed', '73 is not contact closure');
 ok(!$qso->parse('IU0ABC DE DL1ABC TU 73 KN')->message->{ack},
     'pleasantries do not acknowledge a report');
@@ -75,6 +78,7 @@ my $rtty = Ham::QSO->new(profile => 'it-rtty');
 is($rtty->parse('CQ DE IU0ABC IU0ABC CQ')->status, 'supported', 'RTTY CQ suffix');
 is($rtty->parse('IU0ABC DE DL1ABC 73 <SK>')->status,
     'unsupported', 'literal CW prosign rejected in RTTY');
+
 for my $profile (qw(it-cw it-rtty iaru-cw iaru-rtty)) {
     my $q = Ham::QSO->new(profile => $profile);
     for my $fields (

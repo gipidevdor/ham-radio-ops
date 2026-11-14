@@ -1,6 +1,6 @@
 use 5.020;
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use utf8;
 use Test::More;
 use Encode qw(encode);
@@ -264,6 +264,15 @@ subtest 'ADIF data types and compatibility policies' => sub {
         sub { $adif->validate_record({$_->[0] => $_->[1]}) },
         "reject invalid $_->[0]"
     ) for @invalid;
+    for my $value (',IOTA', 'IOTA,', 'DXCC:', 'DXCC:CARD&') {
+        for my $direction (qw(import export)) {
+            throws(
+                'QSO_E_ADIF',
+                sub { $adif->validate_record({CREDIT_GRANTED => $value}, direction => $direction) },
+                "reject malformed credit list $value on $direction"
+            );
+        }
+    }
     is($adif->validate_record({MODE => 'PSK', SUBMODE => 'PSK31'})->{SUBMODE},
         'PSK31', 'known mode/submode relationship accepted');
     is($adif->validate_record({STATE => 'RM', DXCC => '248'})->{STATE},
@@ -306,6 +315,49 @@ subtest 'ADX default types and import compatibility' => sub {
     ok(
         $adif->validate_adx($xml, direction => 'import'),
         'official generic schema accepts omitted APP type'
+    );
+    my $empty_typed =
+          '<?xml version="1.0"?><ADX><HEADER>'
+        . '<USERDEF FIELDID="1" TYPE="N">SCORE</USERDEF></HEADER><RECORDS>'
+        . '<RECORD><APP PROGRAMID="EXAMPLE" FIELDNAME="COUNT" TYPE="N"/></RECORD>'
+        . '<RECORD><USERDEF FIELDNAME="SCORE"/></RECORD></RECORDS></ADX>';
+    ok(
+        $adif->validate_adx($empty_typed, direction => 'import'),
+        'legacy empty typed extensions remain importable'
+    );
+    for my $field ('<APP PROGRAMID="EXAMPLE" FIELDNAME="COUNT" TYPE="N"/>',
+        '<USERDEF FIELDNAME="SCORE"/>')
+    {
+        my $invalid_export =
+              '<?xml version="1.0"?><ADX><HEADER>'
+            . '<USERDEF FIELDID="1" TYPE="N">SCORE</USERDEF></HEADER><RECORDS>'
+            . "<RECORD>$field</RECORD></RECORDS></ADX>";
+        throws(
+            'QSO_E_ADIF',
+            sub { $adif->validate_adx($invalid_export) },
+            'export validation checks the numeric extension value'
+        );
+    }
+    my $application = '<?xml version="1.0"?><ADX><HEADER/><RECORDS><RECORD>'
+        . '<APP PROGRAMID="_LOGGER" FIELDNAME="COUNT" TYPE="N">7</APP></RECORD></RECORDS></ADX>';
+    my $roundtrip = $adif->encode(%{$adif->decode($application)});
+    like(
+        $roundtrip,
+        qr/<APP[ ]PROGRAMID="_LOGGER"[ ]FIELDNAME="COUNT"[ ]TYPE="N">7<\/APP>/x,
+        'ADX preserves identifiers even when the program starts with an underscore'
+    );
+    ok($adif->validate_adx($roundtrip), 'round-tripped APP still satisfies the official schema');
+    my $multiline = '<?xml version="1.0"?><ADX><HEADER/><RECORDS><RECORD>'
+        . "<NOTES>line one\nline two</NOTES></RECORD></RECORDS></ADX>";
+    ok($adif->validate_adx($multiline), 'export validation accepts XML-normalized line breaks');
+    my $older_version = '<?xml version="1.0"?><ADX><HEADER><ADIF_VER>3.1.7</ADIF_VER></HEADER>'
+        . '<RECORDS><RECORD><CALL>DL1ABC</CALL></RECORD></RECORDS></ADX>';
+    ok($adif->validate_adx($older_version, direction => 'import'),
+        'earlier ADX edition is importable');
+    throws(
+        'QSO_E_ADIF',
+        sub { $adif->validate_adx($older_version) },
+        'export validation checks the declared ADIF edition'
     );
     my $typed = '<APP_EXAMPLE_COUNT:1:N>1<EOR><APP_EXAMPLE_COUNT:1>2<EOR>';
     is($adif->decode($typed)->{types}{APP_EXAMPLE_COUNT},

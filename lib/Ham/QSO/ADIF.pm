@@ -229,6 +229,7 @@ sub _credit_list {
     my ($direction, $fields) = @{$context}{qw(direction fields)};
     for my $item (split /,/x, $value, -1) {
         my ($credit, $media) = split /:/x, $item, 2;
+        _bad('Award or credit list contains an empty item') unless length($credit // '');
         if ($type eq 'CreditList') {
             my $enum = $direction eq 'import'
                 && $registry->{enums}{AWARD}{uc $credit} ? 'AWARD' : 'CREDIT';
@@ -241,6 +242,7 @@ sub _credit_list {
             _bad('Sponsored awards cannot specify QSL media') if defined $media;
         }
         if (defined $media) {
+            _bad('Credit list requires QSL media after the colon') unless length $media;
             _enum('QSLMEDIUM', $_, $direction, $fields->{QSO_DATE}) for split /&/x, $media, -1;
         }
     }
@@ -485,6 +487,11 @@ sub _validate {
     my ($self,  $entry,     $context) = @_;
     my ($scope, $direction, $format)  = @{$context}{qw(scope direction format)};
     my $copy = _hash($entry);
+    _bad('Export ADIF_VER must be 3.1.8')
+        if $scope eq 'header'
+        && $direction eq 'export'
+        && exists($copy->{ADIF_VER})
+        && $copy->{ADIF_VER} ne '3.1.8';
     for my $name (keys %{$copy}) {
         if ($scope eq 'header' && $name =~ /\AUSERDEF[1-9][0-9]*\z/x) {
             $self->_value($name, $copy->{$name}, {type => 'String'}, $context);
@@ -498,12 +505,14 @@ sub _validate {
                 {direction => $direction, format => $format, fields => $copy}
             );
         }
-        if ($direction eq 'import') {
-            $copy->{$name} =~ s/(?<!\r)\n/\r\n/gx
-                if $format eq 'adx' && $definition->{type} eq 'MultilineString';
-            $copy->{$name} = substr($copy->{$name}, 0, 4)
-                if $definition->{type} eq 'GridSquareExt' && length($copy->{$name}) > 4;
-        }
+        $copy->{$name} =~ s/(?<!\r)\n/\r\n/gx
+            if $definition->{type} eq 'MultilineString'
+            && $format eq 'adx'
+            && ($direction eq 'import' || $context->{from_xml});
+        $copy->{$name} = substr($copy->{$name}, 0, 4)
+            if $direction eq 'import'
+            && $definition->{type} eq 'GridSquareExt'
+            && length($copy->{$name}) > 4;
         $self->_value($name, $copy->{$name}, $definition,
             {direction => $direction, format => $format, fields => $copy});
         _extension_value($name, $copy->{$name}, $definition);
@@ -625,9 +634,9 @@ sub _adx_application {
 }
 
 sub _adx_field {
-    my ($field, $header, $entry, $context) = @_;
-    my ($types, $applications)             = @{$context}{qw(types applications)};
-    my ($name, $attrs, $value)             = @{$field}{qw(name attrs text)};
+    my ($field, $header, $entry, $state) = @_;
+    my ($types, $applications)           = @{$state}{qw(types applications)};
+    my ($name, $attrs, $value)           = @{$field}{qw(name attrs text)};
     if ($header && $name eq 'USERDEF') {
         _adx_attributes($attrs, qw(FIELDID TYPE ENUM RANGE));
         _bad('ADX USERDEF FIELDID must be a positive integer')
@@ -642,9 +651,8 @@ sub _adx_field {
     elsif (!$header && $name eq 'USERDEF') {
         _adx_attributes($attrs, qw(FIELDNAME TYPE));
         $name = _name($attrs->{FIELDNAME});
-        my $definitions = _definitions($context->{header}, $types);
         _bad('ADX USERDEF instance is not declared in the header')
-            unless exists $definitions->{$name};
+            unless exists $state->{definitions}{$name};
     }
     elsif (!$header && $name eq 'APP') {
         $name = _adx_application($attrs, $types, $applications);
@@ -692,17 +700,12 @@ sub _adx_end {
     pop @{$state->{stack}};
     if ($state->{field} && $state->{field}{name} eq $name) {
         my $is_header = $state->{stack}[-1] eq 'HEADER';
-        _adx_field(
-            $state->{field},
-            $is_header,
-            $is_header ? $state->{header} : $state->{current},
-            {
-                types        => $state->{types},
-                applications => $state->{applications},
-                header       => $state->{header}
-            }
-        );
+        _adx_field($state->{field}, $is_header, $is_header ? $state->{header} : $state->{current},
+            $state);
         $state->{field} = undef;
+    }
+    elsif ($name eq 'HEADER') {
+        $state->{definitions} = _definitions($state->{header}, $state->{types});
     }
     elsif ($name eq 'RECORD') {
         push @{$state->{records}}, $state->{current};
@@ -776,17 +779,25 @@ sub decode {
     my ($self, $bytes, @pairs) = @_;
     my %args = named_arguments(@pairs);
     options(\%args, 'format');
+    return $self->_decode_document($bytes, $args{format}, 'import');
+}
+
+sub _decode_document {
+    my ($self, $bytes, $format, $direction) = @_;
     fail('QSO_E_ARGUMENT', 'ADIF input must be a nonempty byte string')
         if !defined($bytes) || ref($bytes) || !length($bytes) || utf8::is_utf8($bytes);
     fail('QSO_E_RESOURCE', 'ADIF input exceeds max_bytes') if length($bytes) > $self->{max_bytes};
-    my $format = $args{format} // ($bytes =~ /\A(?:\xef\xbb\xbf)?\s*<\?xml\b/x ? 'adx' : 'adi');
+    $format //= $bytes =~ /\A(?:\xef\xbb\xbf)?\s*<\?xml\b/x ? 'adx' : 'adi';
     _bad('format must be adi or adx') unless $format =~ /\A(?:adi|adx)\z/x;
     my $document = $format eq 'adi' ? $self->_decode_adi($bytes) : $self->_decode_adx($bytes);
-    my $context  = $self->_context({%{$document}, direction => 'import', format => $format});
+    my $context  = $self->_context({%{$document}, direction => $direction, format => $format});
     @{$document}{qw(header types applications)} = @{$context}{qw(header types applications)};
+    $self->_validate($document->{header}, {%{$context}, scope => 'header'})
+        if $direction eq 'export';
 
+    my $record_context = {%{$context}, scope => 'record', from_xml => $format eq 'adx'};
     for my $entry (@{$document->{records}}) {
-        $entry = $self->_validate($entry, {%{$context}, scope => 'record'});
+        $entry = $self->_validate($entry, $record_context);
     }
     $document->{format} = $format;
     return $document;
@@ -809,7 +820,7 @@ sub validate_adx {
     options(\%args, 'direction');
     my $direction = $args{direction} // 'export';
     _bad('direction must be import or export') unless $direction =~ /\A(?:import|export)\z/x;
-    $self->decode($bytes, format => 'adx');
+    $self->_decode_document($bytes, 'adx', $direction);
     my $available = eval { require XML::LibXML; 1 };
     fail('QSO_E_DEPENDENCY', 'Official XSD validation requires optional XML::LibXML 2.0213+')
         if !$available || $XML::LibXML::VERSION < 2.0213;
@@ -866,18 +877,10 @@ sub _encode_field {
     if (exists $definitions->{$name}) {
         return '<USERDEF FIELDNAME="' . _xml($name) . '">' . _xml($value) . '</USERDEF>';
     }
-    if ($name =~ /\AAPP_([^_]+)_(.+)\z/x) {
+    if ($name =~ /\AAPP_(.+?)_(.+)\z/x) {
         my ($program, $field) = ($1, $2);
-        if (my $application = $applications->{$name}) {
-            _bad('Application metadata must contain programid and fieldname')
-                unless ref($application) eq 'HASH';
-            options($application, qw(programid fieldname));
-            _bad('Application metadata differs from ADI field name')
-                unless _name('APP_'
-                    . ($application->{programid} // '') . '_'
-                    . ($application->{fieldname} // '')) eq $name;
-            ($program, $field) = @{$application}{qw(programid fieldname)};
-        }
+        my $application = $applications->{$name};
+        ($program, $field) = @{$application}{qw(programid fieldname)} if $application;
         return
               '<APP PROGRAMID="'
             . _xml($program)
@@ -905,8 +908,6 @@ sub encode {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
         }
     );
     my ($format, $header) = @{$context}{qw(format header)};
-    _bad('Export ADIF_VER must be 3.1.8')
-        if exists($header->{ADIF_VER}) && $header->{ADIF_VER} ne '3.1.8';
     my $records = $args{records};
     fail('QSO_E_ARGUMENT', 'records must be a plain array') unless ref($records) eq 'ARRAY';
     fail('QSO_E_RESOURCE', 'ADIF record count exceeds max_records')
@@ -1063,7 +1064,8 @@ field set separately. Does not claim a complete or legally compliant contact.
 
     $adif->validate_adx($bytes, direction => 'export');
 
-Runs the structural/value importer and the bundled official CC0 XML schema.
+Checks structure and values against the requested direction's application rules
+and the bundled official CC0 XML schema.
 Direction is export (default, ADIF 3.1.8) or import (generic 3.0.2..3.1.8).
 Returns 1 or throws. Requires optional XML::Parser 2.59+ and XML::LibXML 2.0213+.
 The official schemas document limitations; passing XSD alone is not a claim of

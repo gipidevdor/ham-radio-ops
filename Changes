@@ -1,5 +1,14 @@
 Revision history for Ham-QSO
 
+{{$NEXT}}
+    - Preserve event ID 0 and abort reason 0 in session decisions.
+    - Reject directed exchanges whose sender and recipient are the same station.
+    - Read replay JSON as UTF-8 and diagnose invalid operator names.
+    - Report buffered output failures before the command exits.
+    - Check export ADX values with export rules and reject malformed credit lists.
+    - Preserve ADX application identifiers and detect conflicts with default APP types.
+    - Reuse parsed USERDEF definitions across records in an ADX document.
+
 0.001  2026-11-07
     - Release native XML documents before validators and prevent Windows shutdown crashes.
     - Check optional XML versions in examples/tests and avoid shell quoting of child programs.

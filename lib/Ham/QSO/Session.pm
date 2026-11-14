@@ -55,8 +55,7 @@ sub prepare {
     $self->_active;
     my %args = named_arguments(@pairs);
     fail('QSO_E_SEQUENCE', 'The session has ended')
-        if $self->{facts}{aborted}
-        || $self->{facts}{local_closed};
+        if exists $self->{facts}{aborted} || exists $self->{facts}{local_closed};
     fail('QSO_E_ARGUMENT', 'Session supplies the station identity') if exists $args{from};
     $args{to} //= $self->{peer} if ($args{kind} // 'directed') eq 'directed';
     my $text    = $self->{messages}->compose(from => $self->{station}, %args);
@@ -66,7 +65,7 @@ sub prepare {
     fail('QSO_E_SEQUENCE', 'Prepared recipient differs from the established peer')
         if defined($self->{peer}) && defined($message->{to}) && $message->{to} ne $self->{peer};
     fail('QSO_E_SEQUENCE', 'After peer closure only a closing message may be prepared')
-        if $self->{facts}{remote_closed} && $message->{kind} ne 'close';
+        if exists($self->{facts}{remote_closed}) && $message->{kind} ne 'close';
     return {
         session  => $self->{token},
         revision => $self->{revision},
@@ -117,7 +116,8 @@ sub _apply {
             'QSO-R002', 'violation');
         return;
     }
-    if ($self->{facts}{aborted} || ($self->{facts}{local_closed} && $self->{facts}{remote_closed}))
+    if (exists($self->{facts}{aborted})
+        || (exists($self->{facts}{local_closed}) && exists($self->{facts}{remote_closed})))
     {
         _diagnostic($diagnostics, 'QSO_V_ENDED', 'Evidence received after the session ended',
             'ENG-R001', 'violation');
@@ -157,7 +157,7 @@ sub _directed_event {
     my ($self, $event, $message, $diagnostics) = @_;
     my $tx    = $event->{direction} eq 'tx';
     my $facts = $self->{facts};
-    if (($tx && $facts->{local_closed}) || (!$tx && $facts->{remote_closed})) {
+    if (exists $facts->{$tx ? 'local_closed' : 'remote_closed'}) {
         _diagnostic($diagnostics, 'QSO_V_CLOSED_PARTY', 'Sender has already closed this contact',
             'QSO-R003', 'violation');
         return;
@@ -335,7 +335,9 @@ sub select_peer {
         || ($message->{to} // '') ne $self->{station}
         || $message->{from} ne $args{callsign};
     fail('QSO_E_SEQUENCE', 'Cannot change peer after closure or abort')
-        if $self->{facts}{local_closed} || $self->{facts}{remote_closed} || $self->{facts}{aborted};
+        if exists($self->{facts}{local_closed})
+        || exists($self->{facts}{remote_closed})
+        || exists($self->{facts}{aborted});
     fail('QSO_E_RESOURCE', 'Session event limit exceeded')
         if @{$self->{history}} >= $self->{max_events};
     $self->{peer}        = $args{callsign};
@@ -361,7 +363,7 @@ sub abort {
         || ref($args{reason})
         || !length($args{reason})
         || length($args{reason}) > 1024;
-    return $self->snapshot if $self->{facts}{aborted};
+    return $self->snapshot if exists $self->{facts}{aborted};
     fail('QSO_E_RESOURCE', 'Session event limit exceeded')
         if @{$self->{history}} >= $self->{max_events};
     $self->{facts}{aborted} = $args{reason};
@@ -373,28 +375,28 @@ sub abort {
 sub _completion {
     my ($facts) = @_;
     my $complete =
-           $facts->{identified_local}
-        && $facts->{identified_remote}
+           exists($facts->{identified_local})
+        && exists($facts->{identified_remote})
         && $facts->{sent_report}
         && $facts->{received_report}
         && ($facts->{sent_ack_for}     // '') eq ($facts->{received_report}{event_id} // '-')
         && ($facts->{received_ack_for} // '') eq ($facts->{sent_report}{event_id} // '-') ? 1 : 0;
-    my $terminated =
-        $facts->{aborted} || ($facts->{local_closed} && $facts->{remote_closed}) ? 1 : 0;
+    my $terminated = exists($facts->{aborted})
+        || (exists($facts->{local_closed}) && exists($facts->{remote_closed})) ? 1 : 0;
     return ($complete, $terminated);
 }
 
 sub _state {
     my ($facts, $complete, $terminated) = @_;
     my $state =
-          $facts->{aborted}                                           ? 'ABORTED'
-        : $terminated                                                 ? 'TERMINATED'
-        : ($facts->{local_closed} || $facts->{remote_closed})         ? 'CLOSING'
-        : $complete                                                   ? 'COMPLETE'
-        : ($facts->{sent_report} || $facts->{received_report})        ? 'EXCHANGING'
-        : ($facts->{identified_local} || $facts->{identified_remote}) ? 'CONTACT'
-        : $facts->{calling}                                           ? 'CALLING'
-        :                                                               'READY';
+          exists($facts->{aborted})                                                   ? 'ABORTED'
+        : $terminated                                                                 ? 'TERMINATED'
+        : (exists($facts->{local_closed}) || exists($facts->{remote_closed}))         ? 'CLOSING'
+        : $complete                                                                   ? 'COMPLETE'
+        : ($facts->{sent_report} || $facts->{received_report})                        ? 'EXCHANGING'
+        : (exists($facts->{identified_local}) || exists($facts->{identified_remote})) ? 'CONTACT'
+        : $facts->{calling}                                                           ? 'CALLING'
+        :                                                                               'READY';
     return $state;
 }
 

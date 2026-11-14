@@ -391,4 +391,31 @@ subtest 'Interchange views are deterministic and preserve application identity' 
     done_testing;
 };
 
+subtest 'Journal export detects a conflict with the default application type' => sub {
+    my $log = Ham::QSO->new->logbook(
+        path    => "$directory/app-default.jsonl",
+        station => 'IU0ABC',
+        create  => 1,
+        log_id  => 'app-default'
+    );
+    $log->record(
+        id       => 'implicit',
+        operator => 'IU0ABC',
+        fields   => {%fields, APP_EXAMPLE_COUNTER => '7'}
+    );
+    $log->record(
+        id       => 'explicit',
+        operator => 'IU0ABC',
+        fields   => {%fields, APP_EXAMPLE_COUNTER => '8'},
+        adif     => {types                        => {APP_EXAMPLE_COUNTER => 'N'}}
+    );
+    throws(
+        'QSO_E_ADIF',
+        sub { $log->export_adif },
+        'a shared field type cannot silently reinterpret existing text'
+    );
+    is($log->verify->{sequence}, 3, 'conflicting contacts remain available in the journal');
+    done_testing;
+};
+
 done_testing;

@@ -41,10 +41,13 @@ sub _directed {
         if "$to $from" =~ /\?/x;
     return _analysis($text, 'unsupported', 'QSO_W_HEADER', 'Full addressed identities required')
         unless is_callsign($to) && is_callsign($from);
+    return _analysis($text, 'violation', 'QSO_V_IDENTITY', 'Sender and recipient must differ')
+        if $to eq $from;
     my $message = {kind => 'directed', to => $to, from => $from, ending => $ending, ack => 0};
     my $header  = "$to DE $from";
     $body =~ s/(?:\A|[ ])\Q$header\E\z//x;
     if ($body =~ s/\A(?:R|RR)(?:[ ]|\z)//x) { $message->{ack} = 1 }
+
     if ($body =~ s/\ARST[ ](\S+)(?:[ ]|\z)//x) {
         my $report = $1;
         return _analysis($text, 'ambiguous', 'QSO_W_REPORT', 'Uncertain report')
@@ -231,7 +234,8 @@ RTTY text convention. Received E<lt>KNE<gt> is recognised semantically, but
 canonical composition uses spelled KN, matching the Ham::CW repertoire.
 
 Partial calls and uncertain numeric fields return ambiguous. Recognised invalid
-RST/repeated identities return violation. Other input is unsupported, never
+RST, conflicting repeated identities and identical sender/recipient calls
+return violation. Other input is unsupported, never
 silently guessed or called illegal. No facts are extracted from unsupported text.
 Lexical callsign checks do not prove assignment, nationality or authorisation.
 Invalid argument types throw QSO_E_ARGUMENT; oversized text throws QSO_E_RESOURCE.

@@ -63,8 +63,8 @@ See the executable [codec example](../examples/codecs.pl) and
 
 ## Replay observations
 
-`ham-qso replay --station IU0ABC --input events.jsonl --strict` accepts one
-Session feed object per line, or operator select_peer/abort records. Event IDs
+`ham-qso replay --station IU0ABC --input events.jsonl --strict` accepts one UTF-8
+JSON object per line for Session feed, select_peer or abort. Event IDs
 are idempotent only when the complete normalised event matches. Different evidence
 with the same ID is rejected. Times are caller-selected integer milliseconds
 from one epoch, monotonic and nonoverlapping. EOF only finishes observation.

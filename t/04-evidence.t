@@ -82,4 +82,60 @@ my $other = $qso->session(station => 'IU0ABC');
 event($other, 1, 'tx', 'DL1ABC DE F1ABC RST 599 KN');
 is_deeply($other->snapshot->facts, {}, 'mismatched actual source proves no exchange');
 is($other->snapshot->conformance->{status}, 'violated', 'source conflict is explicit');
+
+subtest 'Zero is a valid event ID and abort reason' => sub {
+    $session->reset;
+    $session->receive('IU0ABC DE DL1ABC RST 589 KN', id => '0', at_ms => 0, duration_ms => 100);
+    is($session->select_peer(callsign => 'DL1ABC', evidence_id => '0')->state,
+        'CONTACT', 'zero ID proves identification after peer selection');
+
+    $session->reset;
+    event($session, 1, 'tx', 'DL1ABC DE IU0ABC RST 579 KN');
+    $session->receive(
+        'IU0ABC DE DL1ABC R RST 589 KN',
+        id          => '0',
+        at_ms       => 10_000,
+        duration_ms => 100
+    );
+    ok(
+        event($session, 3, 'tx', 'DL1ABC DE IU0ABC R KN')->complete,
+        'zero ID can prove identification in a complete exchange'
+    );
+    my $aborted = $session->abort(reason => '0');
+    is($aborted->state, 'ABORTED', 'zero reason marks a session aborted');
+    ok($aborted->terminated && $aborted->complete, 'abort preserves earlier completion');
+    is_deeply($session->abort(reason => 'different')->as_hash,
+        $aborted->as_hash, 'repeating abort preserves the original zero reason');
+    throws('QSO_E_SEQUENCE', sub { $session->prepare }, 'preparation blocked after abort');
+
+    $session->reset;
+    $session->feed(
+        direction   => 'tx',
+        text        => 'DL1ABC DE IU0ABC CL',
+        id          => '0',
+        at_ms       => 0,
+        duration_ms => 100
+    );
+    is($session->snapshot->state, 'CLOSING', 'zero ID proves local closure');
+    throws('QSO_E_SEQUENCE', sub { $session->prepare }, 'closed station cannot prepare an over');
+    ok(
+        event($session, 2, 'rx', 'IU0ABC DE DL1ABC <SK>')->terminated,
+        'both closings terminate with a zero ID on one side'
+    );
+    done_testing;
+};
+
+subtest 'Self-addressed observations do not establish a peer' => sub {
+    $session->reset;
+    event($session, 1, 'rx', 'IU0ABC DE IU0ABC RST 579 KN');
+    throws(
+        'QSO_E_SEQUENCE',
+        sub { $session->select_peer(callsign => 'IU0ABC', evidence_id => 'e1') },
+        'own callsign cannot be selected as the peer'
+    );
+    event($session, 2, 'tx', 'IU0ABC DE IU0ABC RST 599 KN');
+    ok(!defined $session->snapshot->as_hash->{peer}, 'self-addressed TX does not establish a peer');
+    is_deeply($session->snapshot->facts, {}, 'self-addressed traffic proves no exchange facts');
+    done_testing;
+};
 done_testing;

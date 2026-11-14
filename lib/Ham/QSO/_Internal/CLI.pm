@@ -85,13 +85,16 @@ sub _replay {
         station => $opt->{station},
         exists($opt->{peer}) ? (peer => $opt->{peer}) : ()
     );
+    my $decoder = JSON::PP->new->utf8;
     for my $line (split /\n/x, $text) {
         next unless $line =~ /\S/x;
-        my $event = JSON::PP->new->decode($line);
+        my $event = $decoder->decode($line);
         fail('QSO_E_ARGUMENT', 'Each event must be a JSON object') unless ref($event) eq 'HASH';
         if (exists $event->{operator}) {
             my %action   = %{$event};
             my $operator = delete $action{operator};
+            fail('QSO_E_ARGUMENT', 'Expected an operator name')
+                if !defined($operator) || ref($operator);
             if    ($operator eq 'select_peer') { $session->select_peer(%action) }
             elsif ($operator eq 'abort')       { $session->abort(%action) }
             else                               { fail('QSO_E_ARGUMENT', 'Unknown operator event') }

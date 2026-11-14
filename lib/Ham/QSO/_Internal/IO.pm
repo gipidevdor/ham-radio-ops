@@ -4,9 +4,10 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use Exporter 'import';
-use File::Basename                qw(dirname);
-use File::Temp                    qw(tempfile);
-use Fcntl                         qw(O_RDONLY O_WRONLY O_CREAT O_EXCL);
+use File::Basename qw(dirname);
+use File::Temp     qw(tempfile);
+use Fcntl          qw(O_RDONLY O_WRONLY O_CREAT O_EXCL);
+use IO::Handle;
 use Ham::QSO::_Internal::Validate qw(fail);
 our @EXPORT_OK = qw(write_bytes with_file);
 
@@ -16,6 +17,7 @@ sub write_bytes {
     # A closed pipe must become an I/O exception, not terminate the caller.
     local $SIG{PIPE} = 'IGNORE' if exists $SIG{PIPE};
     print {$fh} $bytes or fail('QSO_E_IO', 'Cannot write output handle');
+    $fh->flush         or fail('QSO_E_IO', 'Cannot flush output handle');
     return;
 }
 

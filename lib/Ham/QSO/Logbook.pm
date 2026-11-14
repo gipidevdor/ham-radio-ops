@@ -527,9 +527,11 @@ sub _merge_context {
         $merged->{declarations}{$name} //=
             {identity => $identity, type => $type, value => $declaration};
     }
-    for my $key (sort keys %{$context->{types}}) {
-        next if $key =~ /\AUSERDEF[1-9][0-9]*\z/x || !exists($fields->{$key});
+    for my $key (sort keys %{$fields}) {
+        next if $key =~ /\AUSERDEF[1-9][0-9]*\z/x;
         my $type = $context->{types}{$key};
+        $type //= 'M' if $key =~ /\AAPP_/x;
+        next unless defined $type;
         fail('QSO_E_ADIF', 'Application field types conflict across contacts')
             if exists($merged->{types}{$key}) && $merged->{types}{$key} ne $type;
         $merged->{types}{$key} = $type;

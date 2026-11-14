@@ -2,6 +2,7 @@ use 5.020;
 use strict;
 use warnings FATAL => 'all';
 use Test::More;
+use Encode     qw(encode);
 use File::Temp qw(tempdir);
 use File::Spec;
 use JSON::PP;
@@ -89,4 +90,20 @@ is((cli('{"operator":"other"}', 'replay', '--station', 'IU0ABC'))[0], 2, 'unknow
     cli('{"operator":"abort","reason":"Lost signal"}', 'replay', '--station', 'IU0ABC');
 is($status,                              0,         'operator abort replay');
 is(JSON::PP->new->decode($out)->{state}, 'ABORTED', 'operator replay state');
+my $reason = "Citt\x{e0} senza segnale \x{1f4e1}";
+my $utf8   = JSON::PP->new->utf8;
+my $abort  = $utf8->encode({operator => 'abort', reason => $reason});
+($status, $out, $err) = cli($abort, 'replay', '--station', 'IU0ABC');
+is($status,                               0,       'replay accepts UTF-8 bytes');
+is($utf8->decode($out)->{facts}{aborted}, $reason, 'UTF-8 abort reason survives replay');
+is($err,                                  '',      'valid UTF-8 produces no diagnostic');
+my $invalid_utf8 = encode('ISO-8859-1', '{"operator":"abort","reason":"Citt' . chr(0xe0) . '"}');
+is((cli($invalid_utf8, 'replay', '--station', 'IU0ABC'))[0], 2, 'reject non-UTF-8 JSON');
+
+for my $invalid_operator ('null', '{}') {
+    ($status, $out, $err) =
+        cli(qq{{"operator":$invalid_operator}}, 'replay', '--station', 'IU0ABC');
+    is($status, 2, 'invalid operator name is a usage error');
+    is($err,    "QSO_E_ARGUMENT: Expected an operator name\n", 'structured operator error');
+}
 done_testing;
