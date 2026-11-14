@@ -1,0 +1,19 @@
+[
+  {
+    "text": "IU0ABC DE DL1ABC R RST 579 KN",
+    "status": "supported",
+    "report": "579"
+  },
+  {
+    "text": "IU0? DE DL1ABC KN",
+    "status": "ambiguous"
+  },
+  {
+    "text": "IU0ABC DE DL1ABC NAME MARIO KN",
+    "status": "unsupported"
+  },
+  {
+    "text": "IU0ABC DE DL1ABC RST 699 KN",
+    "status": "violation"
+  }
+]

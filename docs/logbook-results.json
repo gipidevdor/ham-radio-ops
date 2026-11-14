@@ -1,0 +1,107 @@
+{
+  "adif": {
+    "formats": [
+      "ADI",
+      "ADX"
+    ],
+    "official_schema_version": "3.1.8.1",
+    "registry_regeneration": "byte-identical after pinned formatting",
+    "schema_hash_record": "docs/adif-sources.json",
+    "schema_license": "CC0-1.0",
+    "specification": "3.1.8",
+    "standard_fields": 185
+  },
+  "coverage": {
+    "measured": {
+      "branch": {
+        "covered": 908,
+        "error": 74,
+        "percentage": 92.4643584521385,
+        "total": 982,
+        "uncoverable": 0
+      },
+      "statement": {
+        "covered": 1764,
+        "error": 12,
+        "percentage": 99.3243243243243,
+        "total": 1776
+      },
+      "total": {
+        "covered": 2672,
+        "error": 86,
+        "percentage": 96.881798404641,
+        "total": 2758,
+        "uncoverable": 0
+      }
+    },
+    "minimum_branch_percentage": 90,
+    "minimum_statement_percentage": 95,
+    "status": "PASS"
+  },
+  "limitations": [
+    "local macOS ARM64 / Perl 5.44 only; no new cross-platform run",
+    "hash chain is not WORM or authenticated signing",
+    "no qualified timestamp or statutory conservation service configured",
+    "no independent historical DXCC or award-dataset certification",
+    "no current vulnerability/dependency audit performed",
+    "no publication or deployment performed"
+  ],
+  "measured_on": "2026-11-07",
+  "ordinary_and_author_suite": {
+    "files": 22,
+    "status": "PASS",
+    "top_level_assertions": 2080
+  },
+  "ordinary_suite": {
+    "files": 13,
+    "real_cw_rtty_codecs": true,
+    "status": "PASS",
+    "top_level_assertions": 1518
+  },
+  "platform": {
+    "machine": "arm64",
+    "perl": "v5.44.0",
+    "perltidy": "20260826",
+    "system": "Darwin",
+    "xml_libxml": "2.0213",
+    "xml_parser": "2.59"
+  },
+  "production_module_sha256": {
+    "lib/Ham/QSO.pm": "d7a3992916433140f95ee261ae3aed81681969a7b366b5762cc66f68d3409df5",
+    "lib/Ham/QSO/ADIF.pm": "4c230e5d607966c2cdf12413c49eb29fa511f694dafc04b898c8ebd7e9657686",
+    "lib/Ham/QSO/Adapter.pm": "293ee9128b21f5a0a9d75907c9f9ec1a3783f26c0f6ae8f43c12079b7f45c55d",
+    "lib/Ham/QSO/Error.pm": "4d52d49e2dfa7921a620db3279aeddce697e89bb0ca1cd0346d34e8680e97094",
+    "lib/Ham/QSO/Logbook.pm": "85b33b6cd0a52790f233b38ace8033f357e7aaa530ae3d3d742d9ddd6e22d38d",
+    "lib/Ham/QSO/Message.pm": "83ec00a562fdc77794015c103d4cd60441870a2114fadce4bcbfbe052c879fc6",
+    "lib/Ham/QSO/Profile.pm": "c8ec03567dbccf853de786e577cb21bd114979809044fff2e9bb1357c19e9877",
+    "lib/Ham/QSO/Result.pm": "0976ad9cd527678f38be73018463d46618638c9666d7ea9a64ccf096b733fa4b",
+    "lib/Ham/QSO/Session.pm": "a60cc51abf7bbc47f640095afbc95ec485d85bd07cb17474b72b44f8ec21b5a3",
+    "lib/Ham/QSO/_Internal/ADIFData.pm": "01da533d80827765f0ab5bc43884dcbd29debb965d1c529b46f10832dc4ed41b",
+    "lib/Ham/QSO/_Internal/CLI.pm": "19c6ff50050ffa1fa99b8404f8aba4ec125ad45bf60c6bd4c4ff9428a3284f2b",
+    "lib/Ham/QSO/_Internal/Data.pm": "a1e4f678becafc4236c67a19da888ceb2d01d6f213a681f9ef42b46807fcf3e2",
+    "lib/Ham/QSO/_Internal/IO.pm": "b2be17a64543e09e501aa5ff7956dca9419dd2ee9a4e9bced4dddd6ef5d7e810",
+    "lib/Ham/QSO/_Internal/Validate.pm": "8f1cea0b9bc18ac70b5bfe9f08692dcd5d59b92d05715915f51cd2f57ad36658"
+  },
+  "release": {
+    "archive_metadata_and_inventory": "PASS",
+    "distcheck": "PASS",
+    "disttest": "PASS",
+    "installed_logbook_example": "PASS",
+    "installed_official_adx_schema_validation": "PASS",
+    "isolated_installation": "PASS",
+    "optional_codecs_in_isolated_installation": "explicitly skipped; actual sibling codecs exercised separately in ordinary suite"
+  },
+  "station_log": {
+    "journal_format": "ham-qso-logbook-1",
+    "verified_contracts": [
+      "original evidence survives correction and Session reset",
+      "explicit attributed correction predecessor and reason",
+      "concurrent cooperating append writers",
+      "altered records and incomplete writes block appends",
+      "saved checkpoint detects truncation and complete rehash",
+      "uncertain sync commit must be inspected before retry",
+      "ADIF imports preserve extension declarations and types",
+      "UTC on/off dates across midnight"
+    ]
+  }
+}

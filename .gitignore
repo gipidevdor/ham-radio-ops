@@ -1,0 +1,16 @@
+/blib/
+/Makefile
+/Makefile.old
+/MYMETA.*
+/pm_to_blib
+/cover_db/
+/_site/
+/.author/
+/cli-install tools/
+/Ham-QSO-*/
+/Ham-QSO-*.tar.gz
+*.bak
+*.tdy
+*.ERR
+.DS_Store
+/tmp/

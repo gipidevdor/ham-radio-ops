@@ -1,0 +1,115 @@
+{
+  "PDL": {
+    "loaded_in_integration_tests": false,
+    "recommended": false,
+    "required": false
+  },
+  "author_checks": {
+    "checks": [
+      "critic severity 3",
+      "pinned tidy",
+      "POD",
+      "standalone documentation snippets",
+      "metadata",
+      "CPANTS kwalitee",
+      "site build/link/reproducibility checks"
+    ],
+    "command": "PERL5LIB=\"$(pwd)/lib:$(pwd)/../ham-cw/lib:$(pwd)/../ham-rtty/lib\" prove -lr xt",
+    "files": 7,
+    "status": "PASS",
+    "top_level_assertions": 347
+  },
+  "codec_source_trees": {
+    "ham-cw": {
+      "checkout_commit": "2168dbc6256066d9975bf511f296fea7a269e010",
+      "lib_tree_sha256": "e167bb251335ed4cadcd61a29533641fa97a4ec9ebad916a31016bc0506429bf",
+      "version": "0.001"
+    },
+    "ham-rtty": {
+      "checkout_commit": "ff703265d8bbc4f8686a30f366d7eac4ab611184",
+      "lib_tree_sha256": "523d268c563def955d24ecfbdec5542def6b2d7f0d03dba68830bcd505f00f55",
+      "version": "0.001"
+    }
+  },
+  "configured_not_executed": [
+    "Linux/Windows/FreeBSD/Solaris/Cygwin CI",
+    "other supported Perl interpreters",
+    "GitHub Pages deployment",
+    "full dependency and vulnerability audit"
+  ],
+  "conformance_scope": "Supported ordinary two-station CW/RTTY semantics and caller-supplied Italian identification evidence; no blanket legal certification",
+  "coverage": {
+    "command": "PERL5LIB=lib:../ham-cw/lib:../ham-rtty/lib HARNESS_PERL_SWITCHES=\"-MDevel::Cover=-db,.author/lean-cover,-blib,0,-coverage,statement,branch,condition,-select,lib/Ham/QSO,-ignore,^t/\" prove -lr t",
+    "measured": {
+      "branch": {
+        "covered": 477,
+        "error": 13,
+        "percentage": 97.3469387755102,
+        "total": 490,
+        "uncoverable": 0
+      },
+      "statement": {
+        "covered": 924,
+        "error": 4,
+        "percentage": 99.5689655172414,
+        "total": 928
+      },
+      "total": {
+        "covered": 1401,
+        "error": 17,
+        "percentage": 98.8011283497884,
+        "total": 1418,
+        "uncoverable": 0
+      }
+    },
+    "required_branch": 90,
+    "required_statement": 95,
+    "selection": "all production modules, including facade, adapters and CLI; external codecs excluded",
+    "status": "PASS"
+  },
+  "date": "2026-11-07",
+  "distribution": "Ham-QSO",
+  "environment": {
+    "machine": "arm64",
+    "os": "Darwin",
+    "perl": "5.44.0",
+    "perltidy": "20260826"
+  },
+  "ordinary_tests": {
+    "command": "PERL5LIB=lib:../ham-cw/lib:../ham-rtty/lib prove -lr t",
+    "files": 11,
+    "optional_codecs": "both real libraries exercised, including WAV reception and CLI",
+    "status": "PASS",
+    "top_level_assertions": 1382
+  },
+  "packaging": {
+    "checks": [
+      "make test",
+      "make disttest",
+      "archive CPANTS and metadata",
+      "isolated install",
+      "installed CLI launcher",
+      "core examples against installed library"
+    ],
+    "optional_codecs_in_isolated_core_install": "explicit skips; both tested separately from source",
+    "status": "PASS"
+  },
+  "production_module_sha256": {
+    "lib/Ham/QSO.pm": "7d9c3f8e6d751ea5f87d00daeab1489cdb139fe147b694fa07514152455ab170",
+    "lib/Ham/QSO/Adapter.pm": "293ee9128b21f5a0a9d75907c9f9ec1a3783f26c0f6ae8f43c12079b7f45c55d",
+    "lib/Ham/QSO/Error.pm": "4d52d49e2dfa7921a620db3279aeddce697e89bb0ca1cd0346d34e8680e97094",
+    "lib/Ham/QSO/Message.pm": "83ec00a562fdc77794015c103d4cd60441870a2114fadce4bcbfbe052c879fc6",
+    "lib/Ham/QSO/Profile.pm": "c8ec03567dbccf853de786e577cb21bd114979809044fff2e9bb1357c19e9877",
+    "lib/Ham/QSO/Result.pm": "0976ad9cd527678f38be73018463d46618638c9666d7ea9a64ccf096b733fa4b",
+    "lib/Ham/QSO/Session.pm": "a60cc51abf7bbc47f640095afbc95ec485d85bd07cb17474b72b44f8ec21b5a3",
+    "lib/Ham/QSO/_Internal/CLI.pm": "19c6ff50050ffa1fa99b8404f8aba4ec125ad45bf60c6bd4c4ff9428a3284f2b",
+    "lib/Ham/QSO/_Internal/Data.pm": "a1e4f678becafc4236c67a19da888ceb2d01d6f213a681f9ef42b46807fcf3e2",
+    "lib/Ham/QSO/_Internal/IO.pm": "b2be17a64543e09e501aa5ff7956dca9419dd2ee9a4e9bced4dddd6ef5d7e810",
+    "lib/Ham/QSO/_Internal/Validate.pm": "8f1cea0b9bc18ac70b5bfe9f08692dcd5d59b92d05715915f51cd2f57ad36658"
+  },
+  "version": "0.001",
+  "workflow_validation": {
+    "status": "PASS",
+    "tool": "actionlint"
+  }
+}

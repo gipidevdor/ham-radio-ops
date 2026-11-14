@@ -1,0 +1,34 @@
+{
+  "examples": [
+    {
+      "file": "logbook.pl",
+      "requires": []
+    },
+    {
+      "file": "messages.pl",
+      "requires": []
+    },
+    {
+      "file": "session.pl",
+      "requires": []
+    },
+    {
+      "file": "codecs.pl",
+      "args": [
+        "cw"
+      ],
+      "requires": [
+        "Ham::CW"
+      ]
+    },
+    {
+      "file": "codecs.pl",
+      "args": [
+        "rtty"
+      ],
+      "requires": [
+        "Ham::RTTY"
+      ]
+    }
+  ]
+}

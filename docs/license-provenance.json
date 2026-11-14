@@ -1,0 +1,341 @@
+{
+  "bundled_material": [],
+  "external_material_inventories": [
+    {
+      "collection": "bundled_schemas",
+      "path": "docs/adif-sources.json"
+    }
+  ],
+  "externally_invoked_tools": [
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/actions/checkout/blob/3d3c42e5aac5ba805825da76410c181273ba90b1/LICENSE",
+      "ref": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "repository": "actions/checkout"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/actions/configure-pages/blob/45bfe0192ca1faeb007ade9deae92b16b8254a0d/LICENSE",
+      "ref": "45bfe0192ca1faeb007ade9deae92b16b8254a0d",
+      "repository": "actions/configure-pages"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/actions/deploy-pages/blob/368f82528645a54fb793d4d04e342629a3f51346/LICENSE",
+      "ref": "368f82528645a54fb793d4d04e342629a3f51346",
+      "repository": "actions/deploy-pages"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/actions/upload-artifact/blob/cf430e030ddbb5b0abf93d22962f4752f3646cd9/LICENSE",
+      "ref": "cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "repository": "actions/upload-artifact"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/actions/upload-pages-artifact/blob/fc324d3547104276b827a68afc52ff2a11cc49c9/LICENSE",
+      "ref": "fc324d3547104276b827a68afc52ff2a11cc49c9",
+      "repository": "actions/upload-pages-artifact"
+    },
+    {
+      "bundled": false,
+      "license": "GNU GPL version 3 (see upstream notice)",
+      "license_url": "https://github.com/cygwin/cygwin-install-action/blob/5a1b0cd107181fa6bb6bf3f90d500f4fb3132f18/LICENSE",
+      "ref": "5a1b0cd107181fa6bb6bf3f90d500f4fb3132f18",
+      "repository": "cygwin/cygwin-install-action"
+    },
+    {
+      "bundled": false,
+      "go_module": "github.com/zricethezav/gitleaks/v8",
+      "license": "MIT",
+      "license_revision": "83d9cd684c87d95d656c1458ef04895a7f1cbd8e",
+      "license_url": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/LICENSE",
+      "ref": "v8.30.1",
+      "repository": "gitleaks/gitleaks"
+    },
+    {
+      "bundled": false,
+      "license": "Perl 5 terms: Artistic License or GPL version 1 or later",
+      "license_url": "https://github.com/miyagawa/cpanminus/blob/ef89524f68e1744897979896f9c2e92c7b161bbb/LICENSE",
+      "ref": "ef89524f68e1744897979896f9c2e92c7b161bbb",
+      "repository": "miyagawa/cpanminus"
+    },
+    {
+      "bundled": false,
+      "go_module": "github.com/rhysd/actionlint/cmd/actionlint",
+      "license": "MIT",
+      "license_revision": "914e7df21a07ef503a81201c76d2b11c789d3fca",
+      "license_url": "https://github.com/rhysd/actionlint/blob/914e7df21a07ef503a81201c76d2b11c789d3fca/LICENSE.txt",
+      "ref": "v1.7.12",
+      "repository": "rhysd/actionlint"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/shogo82148/actions-setup-perl/blob/84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2/LICENSE.md",
+      "ref": "84c44b5a14f12b311f1bf3d2a70c8807f30b7ab2",
+      "repository": "shogo82148/actions-setup-perl"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/vmactions/freebsd-vm/blob/c46abacb49f09938ca4e1702d15d836285d694cc/LICENSE",
+      "ref": "c46abacb49f09938ca4e1702d15d836285d694cc",
+      "repository": "vmactions/freebsd-vm"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_url": "https://github.com/vmactions/solaris-vm/blob/1c166978f5a2c1f87f1c9d4d8dd85ae3d1eff6f7/LICENSE",
+      "ref": "1c166978f5a2c1f87f1c9d4d8dd85ae3d1eff6f7",
+      "repository": "vmactions/solaris-vm"
+    },
+    {
+      "bundled": false,
+      "license": "MIT",
+      "license_revision": "effdb35fa7868863f11655db256d9008922fa427",
+      "license_url": "https://github.com/zizmorcore/zizmor/blob/effdb35fa7868863f11655db256d9008922fa427/LICENSE",
+      "python_distribution": "zizmor",
+      "ref": "v1.31.1",
+      "repository": "zizmorcore/zizmor"
+    }
+  ],
+  "license_file": {
+    "copyright": "Copyright (c) 2000-2006, The Perl Foundation.",
+    "path": "LICENSE",
+    "reuse": "verbatim license text",
+    "sha256": "bae466ac8d7100c304fe76632ccc627203a3897d3f7166f3cce00fb9df8c2074"
+  },
+  "license_texts": [
+    {
+      "license": "CC0-1.0",
+      "path": "LICENSES/CC0-1.0.txt",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "source": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt"
+    }
+  ],
+  "original_fixture_files": [
+    "corpus/semantic.json",
+    "examples/complete-it-cw.jsonl"
+  ],
+  "project_license": "Artistic-2.0",
+  "referenced_publications": [
+    {
+      "bundled": false,
+      "copyright": "Copyright 2026 IARU Region 1.",
+      "edition": "Fourth edition, v4.2.0 (2026)",
+      "license": "CC-BY-SA-4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/legalcode.en",
+      "source": "https://www.iaru-r1.org/on-the-air/eop/",
+      "title": "Ethics and Operating Procedures for the Radio Amateur",
+      "use": "Bibliographic references and independently written implementation requirements; no publication prose, tables, images or translated extracts are bundled."
+    },
+    {
+      "bundled": false,
+      "copyright": "ITU; all rights reserved unless a specific permission applies.",
+      "source": "https://www.itu.int/rec/R-REC-M.1677/en",
+      "terms_url": "https://www.itu.int/en/Pages/copyright.aspx",
+      "title": "ITU-R M.1677-1",
+      "use": "External standard reference; Morse symbols and audio are handled by the separately licensed optional codec."
+    }
+  ],
+  "reused_project_material": {
+    "copyright": "Copyright (c) 2026 Giacomo Picchiarelli.",
+    "files": [
+      {
+        "path": ".editorconfig",
+        "reference_sha256": "73452af6cdafd978907f47ad866497d86e57bede665e004e47b2760782ff2006",
+        "reuse": "verbatim",
+        "source_path": ".editorconfig"
+      },
+      {
+        "adaptation": "Pin LF for license texts, notices, the shared CSS and verbatim configuration files so exact-content checks survive cross-platform checkouts. Preserve the unmodified official CC0 ADX schema bytes by disabling text normalization for .xsd files.",
+        "path": ".gitattributes",
+        "reference_sha256": "d26d4822f02c7e366d339338368cfe094c59c15f7f110e4a12253488316e4b2c",
+        "reuse": "adapted",
+        "source_path": ".gitattributes"
+      },
+      {
+        "path": ".github/ISSUE_TEMPLATE/bug_report.yml",
+        "reference_sha256": "86559a75af22e7ade11e0a845b672f2edaec4c472ba49ef7b7bafd18b01dee91",
+        "reuse": "adapted",
+        "source_path": ".github/ISSUE_TEMPLATE/bug_report.yml"
+      },
+      {
+        "path": ".github/ISSUE_TEMPLATE/config.yml",
+        "reference_sha256": "13064e7bea658e01e718b414fbb7b3b244f36411fe25ee2055c151f7b534547a",
+        "reuse": "adapted",
+        "source_path": ".github/ISSUE_TEMPLATE/config.yml"
+      },
+      {
+        "path": ".github/dependabot.yml",
+        "reference_sha256": "88e6a5122c9c950b332ba40752e51473870a457aaa2c7202b82c3f50f83c4794",
+        "reuse": "adapted",
+        "source_path": ".github/dependabot.yml"
+      },
+      {
+        "path": ".github/scripts/portability.sh",
+        "reference_sha256": "a0258ee7a6ce05f8d7839e2c55272f7e5ec9fab9785c557130e6317fcf0baabe",
+        "reuse": "adapted",
+        "source_path": ".github/scripts/portability.sh"
+      },
+      {
+        "path": ".github/workflows/pages.yml",
+        "reference_sha256": "454f53075f5aea3bd3ee935a2a62e4193d471a0e0eea95bd4d3e076719fbc695",
+        "reuse": "adapted",
+        "source_path": ".github/workflows/pages.yml"
+      },
+      {
+        "path": ".github/workflows/portability.yml",
+        "reference_sha256": "04c956adcc08522d7c03b706c373d1249ff30637b9d9760f5cefc093084e48cf",
+        "reuse": "adapted",
+        "source_path": ".github/workflows/portability.yml"
+      },
+      {
+        "path": ".github/workflows/security.yml",
+        "reference_sha256": "03adb1b4d1a90e0803f8d363e8569063645d937b33651534667e07831147ee0e",
+        "reuse": "adapted",
+        "source_path": ".github/workflows/security.yml"
+      },
+      {
+        "path": ".perlcriticrc",
+        "reference_sha256": "9b6c2a251b951a1bbb3c9d234ec9253a58ec0aa2716a41f512300d98ad83f06d",
+        "reuse": "verbatim",
+        "source_path": ".perlcriticrc"
+      },
+      {
+        "path": ".perltidyrc",
+        "reference_sha256": "f2591631d5dc71792ff9405f26d5edc4127fd0b85b4336de3557996e5dbb989c",
+        "reuse": "verbatim",
+        "source_path": ".perltidyrc"
+      },
+      {
+        "path": "MANIFEST.SKIP",
+        "reference_sha256": "223ef99a8d52aef41af2cf6b04c8349ef8e8ec755e6c4528560ea38ea5cda240",
+        "reuse": "adapted",
+        "source_path": "MANIFEST.SKIP"
+      },
+      {
+        "path": "lib/Ham/QSO/Error.pm",
+        "reference_sha256": "c0b9b052b6baa9920915957ad7f4473efe4c9aa7f9f037f4a21af8403424d8b6",
+        "reuse": "adapted",
+        "source_path": "lib/Ham/CW/Error.pm"
+      },
+      {
+        "path": "lib/Ham/QSO/_Internal/Data.pm",
+        "reference_sha256": "7a8b7f8c3bd17418505898a600ef4deb0ac138eb9be0e6f94cef0a3cab94625a",
+        "reuse": "adapted",
+        "source_path": "lib/Ham/CW/_Internal/Data.pm"
+      },
+      {
+        "path": "lib/Ham/QSO/_Internal/IO.pm",
+        "reference_sha256": "ef0fb3a8dffde4d0ca578dbd488b20da6697e0ab0c70a9c47201070e7969b74c",
+        "reuse": "adapted",
+        "source_path": "lib/Ham/CW/_Internal/IO.pm"
+      },
+      {
+        "path": "lib/Ham/QSO/_Internal/Validate.pm",
+        "reference_sha256": "f5168dac6642c20890d2fd07ab37432e5e5ae92e736e357c77b79c5cbafc3a4b",
+        "reuse": "adapted",
+        "source_path": "lib/Ham/CW/_Internal/Validate.pm"
+      },
+      {
+        "path": "maint/archive.pl",
+        "reference_sha256": "6f8e3978884b70bb89af0685fe0b50a8b017a923b49f982ddfdc79b7ca619e8e",
+        "reuse": "adapted",
+        "source_path": "maint/archive.pl"
+      },
+      {
+        "path": "maint/audit-dependencies.pl",
+        "reference_sha256": "923f040dc908769ce9bf726efb7e03dab31521b2d31f635e8e4dcfbc04ddfd3b",
+        "reuse": "adapted",
+        "source_path": "maint/audit-dependencies.pl"
+      },
+      {
+        "path": "maint/build-site.pl",
+        "reference_sha256": "fbb745ff1693e16922e7e79aeb48ee0c754a52dad2c90208feec4754767dd631",
+        "reuse": "adapted",
+        "source_path": "maint/build-site.pl"
+      },
+      {
+        "path": "maint/check-cli-install.pl",
+        "reference_sha256": "a531965c335121b06b2b7ed18a742bb6c9e6f6058b837c051325d4be79a692f1",
+        "reuse": "adapted",
+        "source_path": "maint/check-cli-install.pl"
+      },
+      {
+        "path": "maint/check-dist.pl",
+        "reference_sha256": "31b80e40ac6a8ccdac536aeb84dc5e04a4911f304a54e338cc49702e672e880d",
+        "reuse": "adapted",
+        "source_path": "maint/check-dist.pl"
+      },
+      {
+        "path": "maint/check-install.pl",
+        "reference_sha256": "c4f3c948d4216ad9fc3c4c753d331969b43d6fb8e05eaf8bf6de6c56e6dfd34a",
+        "reuse": "adapted",
+        "source_path": "maint/check-install.pl"
+      },
+      {
+        "path": "maint/coverage.pl",
+        "reference_sha256": "172ae59352b0194ac6aa428004c01a3e0f282de0bf42e2aa72e5f7beb541c737",
+        "reuse": "adapted",
+        "source_path": "maint/coverage.pl"
+      },
+      {
+        "path": "maint/site.css",
+        "reference_sha256": "4d48d00e36e29e9f4d79d428f37f9cf26c13e9f8148605343519ba1690b438a9",
+        "reuse": "verbatim",
+        "source_path": "maint/site.css"
+      },
+      {
+        "path": "xt/critic.t",
+        "reference_sha256": "51d31d7dadea8326b9d8db6d7b737ae5ebd33bc77457dbc62aa8f843c228b78c",
+        "reuse": "adapted",
+        "source_path": "xt/critic.t"
+      },
+      {
+        "path": "xt/kwalitee.t",
+        "reference_sha256": "4af80613b2e06bd1df11da0f175c0ba33943a5b9d4a37872a7fe94ad9b69edb8",
+        "reuse": "adapted",
+        "source_path": "xt/kwalitee.t"
+      },
+      {
+        "path": "xt/metadata.t",
+        "reference_sha256": "2e1d77f0e40da52a4bdd6627fb38fb14279930de151487ceb60630a0e09d5dc4",
+        "reuse": "adapted",
+        "source_path": "xt/metadata.t"
+      },
+      {
+        "path": "xt/pod.t",
+        "reference_sha256": "0782c8bec2396c4b10dfde5d388e03faa9aea485f49b70a91a87c2b3bbf4fef5",
+        "reuse": "adapted",
+        "source_path": "xt/pod.t"
+      },
+      {
+        "path": "xt/site.t",
+        "reference_sha256": "8ac21cadf910879bb0fc83ebb7b0dab3e90d8a50920c1c85f36ec3fa0e6b610d",
+        "reuse": "adapted",
+        "source_path": "xt/site.t"
+      },
+      {
+        "path": "xt/tidy.t",
+        "reference_sha256": "62317bf19b14c2d216b3e36631320a3850a78b495ca5e7d8ae48d273588283a5",
+        "reuse": "adapted",
+        "source_path": "xt/tidy.t"
+      }
+    ],
+    "license": "Artistic-2.0",
+    "license_url": "https://github.com/gipidevdor/ham-cw/blob/89a575951778181512c082e74e42939a24878d0b/LICENSE",
+    "reference_revision": "89a575951778181512c082e74e42939a24878d0b",
+    "reference_scope": "Pinned source comparison for the provenance review; adapted files are not claimed byte-identical.",
+    "repository": "https://github.com/gipidevdor/ham-cw"
+  },
+  "reviewed_on": "2026-11-07",
+  "schema_version": 1,
+  "scope": "Recorded project reuse, fixture provenance and directly invoked tools. This is not a transitive dependency SBOM or a grant of rights in external works."
+}

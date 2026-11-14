@@ -1,0 +1,52 @@
+{
+  "reviewed_on": "2026-11-07",
+  "specification": {
+    "source": "https://adif.org.uk/318/ADIF_318.htm",
+    "version": "3.1.8",
+    "date": "2026-10-12",
+    "bundled": false
+  },
+  "bundled_schemas": [
+    {
+      "path": "lib/Ham/QSO/_Internal/adx318.xsd",
+      "source": "https://adif.org.uk/318/adx318.xsd",
+      "author": "Graham Smith",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "schema_version": "3.1.8.1",
+      "schema_date": "2026-11-02",
+      "modified": false,
+      "sha256": "d0ed5df329d6a149691e52157c59b1a2b1ee927f8fad13dda84f3d2da4174ae7",
+      "license_file": "LICENSES/CC0-1.0.txt"
+    },
+    {
+      "path": "lib/Ham/QSO/_Internal/adx318generic.xsd",
+      "source": "https://adif.org.uk/318/adx318generic.xsd",
+      "author": "Graham Smith",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "schema_version": "3.1.8.1",
+      "schema_date": "2026-11-02",
+      "modified": false,
+      "sha256": "85728da95e3b47ba0fcfad14e246b050b5772156be36e40768b6dd23c31c7123",
+      "license_file": "LICENSES/CC0-1.0.txt"
+    }
+  ],
+  "original_implementation_license": "Artistic-2.0",
+  "optional_dependencies": [
+    {
+      "module": "XML::Parser",
+      "version": "2.59",
+      "license": "Same terms as Perl itself",
+      "source": "https://metacpan.org/release/TODDR/XML-Parser-2.59",
+      "bundled": false
+    },
+    {
+      "module": "XML::LibXML",
+      "version": "2.0213",
+      "license": "Same terms as Perl itself",
+      "source": "https://metacpan.org/release/TODDR/XML-LibXML-2.0213",
+      "bundled": false
+    }
+  ]
+}

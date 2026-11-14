@@ -1,0 +1,19 @@
+^\.git(?:/|$)
+^\.author/
+^blib/
+^cover_db/
+^Makefile(?:\.old)?$
+^MYMETA\.
+^pm_to_blib$
+^cli-install tools/
+^Ham-QSO-[^/]+(?:/|\.tar(?:\.gz)?$)
+\.(?:bak|tdy|ERR)$
+^examples/.*\.wav$
+(^|/)\.DS_Store$
+^\.github/
+^\.(?:gitignore|gitattributes|editorconfig)$
+^local/
+^_site/
+^corpus/morse\.wav$
+^\.claude/
+^tmp/

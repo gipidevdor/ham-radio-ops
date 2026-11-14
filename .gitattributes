@@ -1,0 +1,21 @@
+* text=auto
+*.pm text eol=lf
+*.pl text eol=lf
+*.sh text eol=lf
+*.t text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+# Keep reviewed notices and verbatim imports identical on every platform.
+LICENSE text eol=lf
+NOTICE text eol=lf
+README text eol=lf
+LICENSES/*.txt text eol=lf
+*.css text eol=lf
+.editorconfig text eol=lf
+.perltidyrc text eol=lf
+.perlcriticrc text eol=lf
+# Preserve the reviewed upstream XML schema bytes, including original line endings.
+*.xsd -text
+*.wav binary
+*.mid binary
